@@ -15,7 +15,7 @@ MengHuo.skill["再起"] = function (self)
     if not query["询问发动技能"]("再起") then
         return false
     end
-    local cards = deck:draw(n)
+    local cards = deck:draw(n + 1)
     local n1 = 0
     local cards1 = {}
     for _, id in pairs(cards) do
@@ -26,8 +26,8 @@ MengHuo.skill["再起"] = function (self)
     end
     self:add_life(n1)
     helper.remove(cards, cards1)
-    helper.insert(self.hand_cards, cards1)
-    helper.insert(deck.discard_pile, cards)
+    helper.insert(self.hand_cards, cards)
+    helper.insert(deck.discard_pile, cards1)
 end
 
 return MengHuo

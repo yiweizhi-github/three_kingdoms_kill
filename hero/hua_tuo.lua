@@ -35,9 +35,13 @@ HuaTuo.skill["急救"] = function (self, target)
     local func = function (id) return self:get_color(id) == macro.color.red end
     local cards = self:get_cards(func, true, true)
     local id = query["选择一张牌"](cards, "急救")
-    helper.remove(self.hand_cards, id)
+    if helper.element(self.hand_cards, id) then
+        helper.remove(self.hand_cards, id)
+    elseif helper.element(self:get_equip_cards(), id) then
+        self:take_off_equip(id)
+    end
+    helper.insert(deck.discard_pile, id)
     target:add_life(1)
-    helper.insert(deck.discard_pile, cards)
 end
 
 return HuaTuo

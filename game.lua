@@ -6,25 +6,27 @@ function Game:init()
     self.players = {}
     self.whose_turn = nil -- 当前是谁的回合
     self.transfer_delay_tactics = {} -- 记录大乔-国色转化的乐不思蜀
+    self.old_kill_target = nil -- 使用方天画戟或天义时，若大乔流离转移，则此变量指向大乔避免其再次成为可选目标
     self.settling_card = {}
     self.finish = false
     self.settle_players = {} -- 回合顺序
     
-    local hero_ids = {}
-    for i = 1, 4, 1 do
-        local hero_id = math.random(resmng.hero_finish_id - resmng.hero_start_id + 1)
-        for _, hero_id1 in ipairs(hero_ids) do
-            if hero_id >= hero_id1 then
-                hero_id = hero_id + 1
-            end
-        end
-        helper.insert(hero_ids, hero_id)
-        hero_id = hero_id + resmng.hero_start_id - 1
-        local hero_class = require("hero." .. resmng[hero_id].module_name)
-        local player = hero_class.new(i, hero_id, i)
-        helper.insert(self.players, player)
-        helper.insert(player.hand_cards, deck:draw(4))
-    end
+    -- local hero_ids = {}
+    -- for i = 1, 4, 1 do
+    --     local hero_id = math.random(resmng.hero_finish_id - resmng.hero_start_id + 2 - i)
+    --     for _, hero_id1 in ipairs(hero_ids) do
+    --         if hero_id >= hero_id1 then
+    --             hero_id = hero_id + 1
+    --         end
+    --     end
+    --     helper.insert(hero_ids, hero_id)
+    --     table.sort(hero_ids)
+    --     hero_id = hero_id + resmng.hero_start_id - 1
+    --     local hero_class = require("hero." .. resmng[hero_id].module_name)
+    --     local player = hero_class.new(i, hero_id, i)
+    --     helper.insert(self.players, player)
+    --     helper.insert(player.hand_cards, deck:draw(4))
+    -- end
 end
 
 function Game:get_player(id)
@@ -52,13 +54,17 @@ function Game:compare_points(player1, player2)
     local id2 = query["选择一张牌"](player2.hand_cards, "拼点")
     helper.remove(player2.hand_cards, id2)
     self.skill["失去手牌"](self, player2, player2, "拼点")
+    text("%s的点数为:%d", player1.name, resmng[id1].points)
+    text("%s的点数为:%d", player2.name, resmng[id2].points)
     helper.insert(deck.discard_pile, {id1, id2})
     return resmng[id1].points > resmng[id2].points
 end
 
 function Game:judge(player)
     local id = deck:draw(1)
-    return self.skill["改判"](self, player, id)
+    text("判定牌为%d-%s, 花色为%s, 点数为%d", id, resmng[id].name, get_suit_str(player:get_suit(id)), resmng[id].points)
+    id = self.skill["改判"](self, player, id)
+    return id
 end
 
 Game.skill["改判"] = function (self, player, id)
@@ -130,7 +136,7 @@ function Game:main()
 end
 
 -- 判定牌可能由大乔-国色转换而来，所以要判断下
-function Game:get_judeg_card_name(id)
+function Game:get_judge_card_name(id)
     if self.transfer_delay_tactics[id] then
         return self.transfer_delay_tactics[id]
     else

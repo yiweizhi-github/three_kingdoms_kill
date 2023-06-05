@@ -1,9 +1,34 @@
 HuangZhong = class(Player)
 
+function HuangZhong:get_min_dis_targets()
+    local targets = {}
+    local min_dis
+    for _, target in ipairs(game:get_other_players(self)) do
+        local dis = self:get_distance(target)
+        if next(targets) then
+            if dis < min_dis then
+                min_dis = dis
+                targets = {target}
+            elseif dis == min_dis then
+                helper.insert(targets, target)
+            end
+        else
+            min_dis = dis
+            targets = {target}
+        end
+    end
+    for _, target in ipairs(targets) do
+        if target:has_skill("空城") and #target.hand_cards == 0 then
+            helper.remove(targets, target)
+        end
+    end
+    return targets
+end
+
 HuangZhong.respond["乱武"] = function (self)
-    local targets = self.get_targets["乱武"](self)
+    local targets = self:get_min_dis_targets()
     local func = function (id) return resmng[id].name == "杀" end
-    local cards = self.get_cards(func, true)
+    local cards = self:get_cards(func, true)
     local t = {}
     for _, id in ipairs(cards) do
         local targets1 = {}

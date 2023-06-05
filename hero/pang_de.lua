@@ -1,7 +1,7 @@
 PangDe = class(Player)
 
 function PangDe:get_distance(another)
-    local dis = self.super.get_distance(another)
+    local dis = Player.get_distance(self, another)
     dis = dis - 1
     return dis > 0 and dis or 0 
 end

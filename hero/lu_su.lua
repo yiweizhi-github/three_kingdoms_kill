@@ -33,6 +33,7 @@ LuSu.skill["好施"] = function (self)
             end
         end
         local target = query["选择一名玩家"](targets, "好施")
+        helper.remove(self.hand_cards, cards)
         helper.insert(target.hand_cards, cards)
     end
 end

@@ -5,7 +5,7 @@ function JiaXv:ctor()
 end
 
 JiaXv.check_skill["乱武"] = function (self)
-    return self["已使用乱武"]
+    return not self["已使用乱武"]
 end
 
 JiaXv.skill["乱武"] = function (self)

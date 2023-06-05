@@ -32,7 +32,7 @@ function helper.remove(t, v)
                 for i, v2 in ipairs(t) do
                     if v2 == v1 then
                         table.remove(t, i)
-                        return
+                        break
                     end
                 end
             end
@@ -103,6 +103,18 @@ function helper.equal(a, b)
     return true   
 end
 
+function get_suit_str(suit)
+    if suit == macro.suit.spade then
+        return "黑桃"
+    elseif suit == macro.suit.heart then
+        return "红桃"
+    elseif suit == macro.suit.club then
+        return "梅花"
+    elseif suit == macro.suit.diamond then
+        return "方块"
+    end
+end
+
 -- 通用打印函数
 function text(str, ...)
     if str then
@@ -140,19 +152,24 @@ end
 -- 打印对局信息
 function print_game_info()
     for _, player in ipairs(game.players) do
-        text("ID:%s", player.id)
-        text("名字:%s", player.name)
-        text("生命:%d", player.life)
-        text("生命上限:%d", player.life_limit)
-        text("技能:%s", t2s(player.skills))
-        text("手牌:%s", t2s(player.hand_cards))
-        text("武器:%s", t2s(player.arm))
-        text("防具:%s", t2s(player.armor))
-        text("+1马:%s", t2s(player.add_horse))
-        text("-1马:%s", t2s(player.sub_horse))
-        text("判定区:%s", t2s(player.judge_cards))
-        text()
+        print_player_info(player)
     end
+end
+
+-- 打印玩家信息
+function print_player_info(player)
+    text()
+    text("ID:%s", player.id)
+    text("名字:%s", player.name)
+    text("生命:%d", player.life)
+    text("生命上限:%d", player.life_limit)
+    text("技能:%s", t2s(player.skills))
+    text("手牌:%s", t2s(player.hand_cards))
+    text("武器:%s", t2s(player.arm))
+    text("防具:%s", t2s(player.armor))
+    text("+1马:%s", t2s(player.add_horse))
+    text("-1马:%s", t2s(player.sub_horse))
+    text("判定区:%s", t2s(player.judge_cards))
 end
 
 return helper

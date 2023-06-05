@@ -14,11 +14,11 @@ XiaHouDun.skill["刚烈"] = function (self, causer, responder)
     if not query["询问发动技能"]("刚烈") then
         return
     end
-    local id = game.judge(self)
+    local id = game:judge(self)
     if self:get_suit(id) == macro.suit.heart then
         return
     end
-    if #self:get_cards(nil, true) < 2 then
+    if #causer:get_cards(nil, true) < 2 then
         causer:sub_life({causer = self, type = macro.sub_life_type.damage, name = "刚烈", id = nil, n = 1})
         return
     end

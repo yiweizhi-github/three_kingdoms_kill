@@ -6,7 +6,7 @@ end
 
 PangTong.skill["涅槃"] = function (self)
     self["已使用涅槃"] = true
-    local cards
+    local cards = {}
     if next(self.hand_cards) then
         helper.insert(cards, self.hand_cards)
         helper.clear(self.hand_cards)
@@ -33,7 +33,7 @@ PangTong.skill["涅槃"] = function (self)
     end
     helper.insert(deck.discard_pile, cards)
     helper.insert(self.hand_cards, deck:draw(3))
-    self:add_life(3)
+    self:add_life(3 - self.life)
 end
 
 return PangTong

@@ -1,5 +1,5 @@
+-- 配置文件
 resmng = {}
-
 
 resmng.card_start_id = 1
 resmng.card_finish_id= 108
@@ -9,114 +9,114 @@ resmng.skill_start_id = 301
 resmng.skill_finish_id= 396
 
 -- 牌的配置
-resmng[1] = {name = "杀", type = "basic", suit = "黑桃", points = 7, id = 1}
-resmng[2] = {name = "杀", type = "basic", suit = "黑桃", points = 8, id = 2}
-resmng[3] = {name = "杀", type = "basic", suit = "黑桃", points = 8, id = 3}
-resmng[4] = {name = "杀", type = "basic", suit = "黑桃", points = 9, id = 4}
-resmng[5] = {name = "杀", type = "basic", suit = "黑桃", points = 9, id = 5}
-resmng[6] = {name = "杀", type = "basic", suit = "黑桃", points = 10, id = 6}
-resmng[7] = {name = "杀", type = "basic", suit = "黑桃", points = 10, id = 7}
-resmng[8] = {name = "杀", type = "basic", suit = "梅花", points = 2, id = 8}
-resmng[9] = {name = "杀", type = "basic", suit = "梅花", points = 3, id = 9}
-resmng[10] = {name = "杀", type = "basic", suit = "梅花", points = 4, id = 10}
-resmng[11] = {name = "杀", type = "basic", suit = "梅花", points = 5, id = 11}
-resmng[12] = {name = "杀", type = "basic", suit = "梅花", points = 6, id = 12}
-resmng[13] = {name = "杀", type = "basic", suit = "梅花", points = 7, id = 13}
-resmng[14] = {name = "杀", type = "basic", suit = "梅花", points = 8, id = 14}
-resmng[15] = {name = "杀", type = "basic", suit = "梅花", points = 8, id = 15}
-resmng[16] = {name = "杀", type = "basic", suit = "梅花", points = 9, id = 16}
-resmng[17] = {name = "杀", type = "basic", suit = "梅花", points = 9, id = 17}
-resmng[18] = {name = "杀", type = "basic", suit = "梅花", points = 10, id = 18}
-resmng[19] = {name = "杀", type = "basic", suit = "梅花", points = 10, id = 19}
-resmng[20] = {name = "杀", type = "basic", suit = "梅花", points = 11, id = 20}
-resmng[21] = {name = "杀", type = "basic", suit = "梅花", points = 11, id = 21}
-resmng[22] = {name = "杀", type = "basic", suit = "红桃", points = 10, id = 22}
-resmng[23] = {name = "杀", type = "basic", suit = "红桃", points = 10, id = 23}
-resmng[24] = {name = "杀", type = "basic", suit = "红桃", points = 11, id = 24}
-resmng[25] = {name = "杀", type = "basic", suit = "方块", points = 6, id = 25}
-resmng[26] = {name = "杀", type = "basic", suit = "方块", points = 7, id = 26}
-resmng[27] = {name = "杀", type = "basic", suit = "方块", points = 8, id = 27}
-resmng[28] = {name = "杀", type = "basic", suit = "方块", points = 9, id = 28}
-resmng[29] = {name = "杀", type = "basic", suit = "方块", points = 10, id = 29}
-resmng[30] = {name = "杀", type = "basic", suit = "方块", points = 13, id = 30}
-resmng[31] = {name = "闪", type = "basic", suit = "红桃", points = 2, id = 31}
-resmng[32] = {name = "闪", type = "basic", suit = "红桃", points = 2, id = 32}
-resmng[33] = {name = "闪", type = "basic", suit = "红桃", points = 13, id = 33}
-resmng[34] = {name = "闪", type = "basic", suit = "方块", points = 2, id = 34}
-resmng[35] = {name = "闪", type = "basic", suit = "方块", points = 2, id = 35}
-resmng[36] = {name = "闪", type = "basic", suit = "方块", points = 3, id = 36}
-resmng[37] = {name = "闪", type = "basic", suit = "方块", points = 4, id = 37}
-resmng[38] = {name = "闪", type = "basic", suit = "方块", points = 5, id = 38}
-resmng[39] = {name = "闪", type = "basic", suit = "方块", points = 6, id = 39}
-resmng[40] = {name = "闪", type = "basic", suit = "方块", points = 7, id = 40}
-resmng[41] = {name = "闪", type = "basic", suit = "方块", points = 8, id = 41}
-resmng[42] = {name = "闪", type = "basic", suit = "方块", points = 9, id = 42}
-resmng[43] = {name = "闪", type = "basic", suit = "方块", points = 10, id = 43}
-resmng[44] = {name = "闪", type = "basic", suit = "方块", points = 11, id = 44}
-resmng[45] = {name = "闪", type = "basic", suit = "方块", points = 11, id = 45}
-resmng[46] = {name = "桃", type = "basic", suit = "红桃", points = 3, id = 46}
-resmng[47] = {name = "桃", type = "basic", suit = "红桃", points = 4, id = 47}
-resmng[48] = {name = "桃", type = "basic", suit = "红桃", points = 6, id = 48}
-resmng[49] = {name = "桃", type = "basic", suit = "红桃", points = 7, id = 49}
-resmng[50] = {name = "桃", type = "basic", suit = "红桃", points = 8, id = 50}
-resmng[51] = {name = "桃", type = "basic", suit = "红桃", points = 9, id = 51}
-resmng[52] = {name = "桃", type = "basic", suit = "红桃", points = 12, id = 52}
-resmng[53] = {name = "桃", type = "basic", suit = "方块", points = 12, id = 53}
-resmng[54] = {name = "南蛮入侵", type = "tactic", suit = "黑桃", points = 7, id = 54}
-resmng[55] = {name = "南蛮入侵", type = "tactic", suit = "黑桃", points = 13, id = 55}
-resmng[56] = {name = "南蛮入侵", type = "tactic", suit = "梅花", points = 7, id = 56}
-resmng[57] = {name = "万箭齐发", type = "tactic", suit = "红桃", points = 1, id = 57}
-resmng[58] = {name = "桃园结义", type = "tactic", suit = "红桃", points = 1, id = 58}
-resmng[59] = {name = "五谷丰登", type = "tactic", suit = "红桃", points = 3, id = 59}
-resmng[60] = {name = "五谷丰登", type = "tactic", suit = "红桃", points = 4, id = 60}
-resmng[61] = {name = "闪电", type = "tactic", suit = "黑桃", points = 1, id = 61}
-resmng[62] = {name = "闪电", type = "tactic", suit = "红桃", points = 12, id = 62}
-resmng[63] = {name = "乐不思蜀", type = "tactic", suit = "黑桃", points = 6, id = 63}
-resmng[64] = {name = "乐不思蜀", type = "tactic", suit = "红桃", points = 6, id = 64}
-resmng[65] = {name = "乐不思蜀", type = "tactic", suit = "梅花", points = 6, id = 65}
-resmng[66] = {name = "无懈可击", type = "tactic", suit = "黑桃", points = 11, id = 66}
-resmng[67] = {name = "无懈可击", type = "tactic", suit = "梅花", points = 12, id = 67}
-resmng[68] = {name = "无懈可击", type = "tactic", suit = "梅花", points = 13, id = 68}
-resmng[69] = {name = "无懈可击", type = "tactic", suit = "方块", points = 12, id = 69}
-resmng[70] = {name = "顺手牵羊", type = "tactic", suit = "黑桃", points = 3, id = 70}
-resmng[71] = {name = "顺手牵羊", type = "tactic", suit = "黑桃", points = 4, id = 71}
-resmng[72] = {name = "顺手牵羊", type = "tactic", suit = "黑桃", points = 11, id = 72}
-resmng[73] = {name = "顺手牵羊", type = "tactic", suit = "方块", points = 3, id = 73}
-resmng[74] = {name = "顺手牵羊", type = "tactic", suit = "方块", points = 4, id = 74}
-resmng[75] = {name = "过河拆桥", type = "tactic", suit = "黑桃", points = 3, id = 75}
-resmng[76] = {name = "过河拆桥", type = "tactic", suit = "黑桃", points = 4, id = 76}
-resmng[77] = {name = "过河拆桥", type = "tactic", suit = "黑桃", points = 12, id = 77}
-resmng[78] = {name = "过河拆桥", type = "tactic", suit = "红桃", points = 12, id = 78}
-resmng[79] = {name = "过河拆桥", type = "tactic", suit = "梅花", points = 3, id = 79}
-resmng[80] = {name = "过河拆桥", type = "tactic", suit = "梅花", points = 4, id = 80}
-resmng[81] = {name = "决斗", type = "tactic", suit = "黑桃", points = 1, id = 81}
-resmng[82] = {name = "决斗", type = "tactic", suit = "梅花", points = 1, id = 82}
-resmng[83] = {name = "决斗", type = "tactic", suit = "方块", points = 1, id = 83}
-resmng[84] = {name = "无中生有", type = "tactic", suit = "红桃", points = 7, id = 84}
-resmng[85] = {name = "无中生有", type = "tactic", suit = "红桃", points = 8, id = 85}
-resmng[86] = {name = "无中生有", type = "tactic", suit = "红桃", points = 9, id = 86}
-resmng[87] = {name = "无中生有", type = "tactic", suit = "红桃", points = 11, id = 87}
-resmng[88] = {name = "借刀杀人", type = "tactic", suit = "梅花", points = 12, id = 88}
-resmng[89] = {name = "借刀杀人", type = "tactic", suit = "梅花", points = 13, id = 89}
-resmng[90] = {name = "诸葛连弩", type = "arm", range = 1, skill = 386, suit = "梅花", points = 1, id = 90}
-resmng[91] = {name = "诸葛连弩", type = "arm", range = 1, skill = 386, suit = "方块", points = 1, id = 91}
-resmng[92] = {name = "寒冰剑", type = "arm", range = 2, skill = 387, suit = "黑桃", points = 2, id = 92}
-resmng[93] = {name = "青釭剑", type = "arm", range = 2, skill = 388, suit = "黑桃", points = 6, id = 93}
-resmng[94] = {name = "雌雄双股剑", type = "arm", range = 2, skill = 389, suit = "黑桃", points = 2, id = 94}
-resmng[95] = {name = "贯石斧", type = "arm", range = 3, skill = 390, suit = "方块", points = 5, id = 95}
-resmng[96] = {name = "青龙偃月刀", type = "arm", range = 3, skill = 391, suit = "黑桃", points = 5, id = 96}
-resmng[97] = {name = "丈八蛇矛", type = "arm", range = 3, skill = 392, suit = "黑桃", points = 12, id = 97}
-resmng[98] = {name = "方天画戟", type = "arm", range = 4, skill = 393, suit = "方块", points = 12, id = 98}
-resmng[99] = {name = "麒麟弓", type = "arm", range = 5, skill = 394, suit = "红桃", points = 5, id = 99}
-resmng[100] = {name = "八卦阵", type = "armor", skill = 395, suit = "黑桃", points = 2, id = 100}
-resmng[101] = {name = "八卦阵", type = "armor", skill = 395, suit = "梅花", points = 2, id = 101}
-resmng[102] = {name = "仁王盾", type = "armor", skill = 396, suit = "梅花", points = 2, id = 102}
-resmng[103] = {name = "的卢", type = "add_horse", suit = "梅花", points = 5, id = 103}
-resmng[104] = {name = "绝影", type = "add_horse", suit = "黑桃", points = 5, id = 104}
-resmng[105] = {name = "爪黄飞电", type = "add_horse", suit = "红桃", points = 13, id = 105}
-resmng[106] = {name = "赤兔", type = "sub_horse", suit = "红桃", points = 5, id = 106}
-resmng[107] = {name = "紫骍", type = "sub_horse", suit = "方块", points = 13, id = 107}
-resmng[108] = {name = "大宛", type = "sub_horse", suit = "黑桃", points = 13, id = 108}
+resmng[1] = {name = "杀", type = "basic", suit = 0, points = 7, id = 1}
+resmng[2] = {name = "杀", type = "basic", suit = 0, points = 8, id = 2}
+resmng[3] = {name = "杀", type = "basic", suit = 0, points = 8, id = 3}
+resmng[4] = {name = "杀", type = "basic", suit = 0, points = 9, id = 4}
+resmng[5] = {name = "杀", type = "basic", suit = 0, points = 9, id = 5}
+resmng[6] = {name = "杀", type = "basic", suit = 0, points = 10, id = 6}
+resmng[7] = {name = "杀", type = "basic", suit = 0, points = 10, id = 7}
+resmng[8] = {name = "杀", type = "basic", suit = 2, points = 2, id = 8}
+resmng[9] = {name = "杀", type = "basic", suit = 2, points = 3, id = 9}
+resmng[10] = {name = "杀", type = "basic", suit = 2, points = 4, id = 10}
+resmng[11] = {name = "杀", type = "basic", suit = 2, points = 5, id = 11}
+resmng[12] = {name = "杀", type = "basic", suit = 2, points = 6, id = 12}
+resmng[13] = {name = "杀", type = "basic", suit = 2, points = 7, id = 13}
+resmng[14] = {name = "杀", type = "basic", suit = 2, points = 8, id = 14}
+resmng[15] = {name = "杀", type = "basic", suit = 2, points = 8, id = 15}
+resmng[16] = {name = "杀", type = "basic", suit = 2, points = 9, id = 16}
+resmng[17] = {name = "杀", type = "basic", suit = 2, points = 9, id = 17}
+resmng[18] = {name = "杀", type = "basic", suit = 2, points = 10, id = 18}
+resmng[19] = {name = "杀", type = "basic", suit = 2, points = 10, id = 19}
+resmng[20] = {name = "杀", type = "basic", suit = 2, points = 11, id = 20}
+resmng[21] = {name = "杀", type = "basic", suit = 2, points = 11, id = 21}
+resmng[22] = {name = "杀", type = "basic", suit = 1, points = 10, id = 22}
+resmng[23] = {name = "杀", type = "basic", suit = 1, points = 10, id = 23}
+resmng[24] = {name = "杀", type = "basic", suit = 1, points = 11, id = 24}
+resmng[25] = {name = "杀", type = "basic", suit = 3, points = 6, id = 25}
+resmng[26] = {name = "杀", type = "basic", suit = 3, points = 7, id = 26}
+resmng[27] = {name = "杀", type = "basic", suit = 3, points = 8, id = 27}
+resmng[28] = {name = "杀", type = "basic", suit = 3, points = 9, id = 28}
+resmng[29] = {name = "杀", type = "basic", suit = 3, points = 10, id = 29}
+resmng[30] = {name = "杀", type = "basic", suit = 3, points = 13, id = 30}
+resmng[31] = {name = "闪", type = "basic", suit = 1, points = 2, id = 31}
+resmng[32] = {name = "闪", type = "basic", suit = 1, points = 2, id = 32}
+resmng[33] = {name = "闪", type = "basic", suit = 1, points = 13, id = 33}
+resmng[34] = {name = "闪", type = "basic", suit = 3, points = 2, id = 34}
+resmng[35] = {name = "闪", type = "basic", suit = 3, points = 2, id = 35}
+resmng[36] = {name = "闪", type = "basic", suit = 3, points = 3, id = 36}
+resmng[37] = {name = "闪", type = "basic", suit = 3, points = 4, id = 37}
+resmng[38] = {name = "闪", type = "basic", suit = 3, points = 5, id = 38}
+resmng[39] = {name = "闪", type = "basic", suit = 3, points = 6, id = 39}
+resmng[40] = {name = "闪", type = "basic", suit = 3, points = 7, id = 40}
+resmng[41] = {name = "闪", type = "basic", suit = 3, points = 8, id = 41}
+resmng[42] = {name = "闪", type = "basic", suit = 3, points = 9, id = 42}
+resmng[43] = {name = "闪", type = "basic", suit = 3, points = 10, id = 43}
+resmng[44] = {name = "闪", type = "basic", suit = 3, points = 11, id = 44}
+resmng[45] = {name = "闪", type = "basic", suit = 3, points = 11, id = 45}
+resmng[46] = {name = "桃", type = "basic", suit = 1, points = 3, id = 46}
+resmng[47] = {name = "桃", type = "basic", suit = 1, points = 4, id = 47}
+resmng[48] = {name = "桃", type = "basic", suit = 1, points = 6, id = 48}
+resmng[49] = {name = "桃", type = "basic", suit = 1, points = 7, id = 49}
+resmng[50] = {name = "桃", type = "basic", suit = 1, points = 8, id = 50}
+resmng[51] = {name = "桃", type = "basic", suit = 1, points = 9, id = 51}
+resmng[52] = {name = "桃", type = "basic", suit = 1, points = 12, id = 52}
+resmng[53] = {name = "桃", type = "basic", suit = 3, points = 12, id = 53}
+resmng[54] = {name = "南蛮入侵", type = "tactic", suit = 0, points = 7, id = 54}
+resmng[55] = {name = "南蛮入侵", type = "tactic", suit = 0, points = 13, id = 55}
+resmng[56] = {name = "南蛮入侵", type = "tactic", suit = 2, points = 7, id = 56}
+resmng[57] = {name = "万箭齐发", type = "tactic", suit = 1, points = 1, id = 57}
+resmng[58] = {name = "桃园结义", type = "tactic", suit = 1, points = 1, id = 58}
+resmng[59] = {name = "五谷丰登", type = "tactic", suit = 1, points = 3, id = 59}
+resmng[60] = {name = "五谷丰登", type = "tactic", suit = 1, points = 4, id = 60}
+resmng[61] = {name = "闪电", type = "tactic", suit = 0, points = 1, id = 61}
+resmng[62] = {name = "闪电", type = "tactic", suit = 1, points = 12, id = 62}
+resmng[63] = {name = "乐不思蜀", type = "tactic", suit = 0, points = 6, id = 63}
+resmng[64] = {name = "乐不思蜀", type = "tactic", suit = 1, points = 6, id = 64}
+resmng[65] = {name = "乐不思蜀", type = "tactic", suit = 2, points = 6, id = 65}
+resmng[66] = {name = "无懈可击", type = "tactic", suit = 0, points = 11, id = 66}
+resmng[67] = {name = "无懈可击", type = "tactic", suit = 2, points = 12, id = 67}
+resmng[68] = {name = "无懈可击", type = "tactic", suit = 2, points = 13, id = 68}
+resmng[69] = {name = "无懈可击", type = "tactic", suit = 3, points = 12, id = 69}
+resmng[70] = {name = "顺手牵羊", type = "tactic", suit = 0, points = 3, id = 70}
+resmng[71] = {name = "顺手牵羊", type = "tactic", suit = 0, points = 4, id = 71}
+resmng[72] = {name = "顺手牵羊", type = "tactic", suit = 0, points = 11, id = 72}
+resmng[73] = {name = "顺手牵羊", type = "tactic", suit = 3, points = 3, id = 73}
+resmng[74] = {name = "顺手牵羊", type = "tactic", suit = 3, points = 4, id = 74}
+resmng[75] = {name = "过河拆桥", type = "tactic", suit = 0, points = 3, id = 75}
+resmng[76] = {name = "过河拆桥", type = "tactic", suit = 0, points = 4, id = 76}
+resmng[77] = {name = "过河拆桥", type = "tactic", suit = 0, points = 12, id = 77}
+resmng[78] = {name = "过河拆桥", type = "tactic", suit = 1, points = 12, id = 78}
+resmng[79] = {name = "过河拆桥", type = "tactic", suit = 2, points = 3, id = 79}
+resmng[80] = {name = "过河拆桥", type = "tactic", suit = 2, points = 4, id = 80}
+resmng[81] = {name = "决斗", type = "tactic", suit = 0, points = 1, id = 81}
+resmng[82] = {name = "决斗", type = "tactic", suit = 2, points = 1, id = 82}
+resmng[83] = {name = "决斗", type = "tactic", suit = 3, points = 1, id = 83}
+resmng[84] = {name = "无中生有", type = "tactic", suit = 1, points = 7, id = 84}
+resmng[85] = {name = "无中生有", type = "tactic", suit = 1, points = 8, id = 85}
+resmng[86] = {name = "无中生有", type = "tactic", suit = 1, points = 9, id = 86}
+resmng[87] = {name = "无中生有", type = "tactic", suit = 1, points = 11, id = 87}
+resmng[88] = {name = "借刀杀人", type = "tactic", suit = 2, points = 12, id = 88}
+resmng[89] = {name = "借刀杀人", type = "tactic", suit = 2, points = 13, id = 89}
+resmng[90] = {name = "诸葛连弩", type = "arm", range = 1, skill = 386, suit = 2, points = 1, id = 90}
+resmng[91] = {name = "诸葛连弩", type = "arm", range = 1, skill = 386, suit = 3, points = 1, id = 91}
+resmng[92] = {name = "寒冰剑", type = "arm", range = 2, skill = 387, suit = 0, points = 2, id = 92}
+resmng[93] = {name = "青釭剑", type = "arm", range = 2, skill = 388, suit = 0, points = 6, id = 93}
+resmng[94] = {name = "雌雄双股剑", type = "arm", range = 2, skill = 389, suit = 0, points = 2, id = 94}
+resmng[95] = {name = "贯石斧", type = "arm", range = 3, skill = 390, suit = 3, points = 5, id = 95}
+resmng[96] = {name = "青龙偃月刀", type = "arm", range = 3, skill = 391, suit = 0, points = 5, id = 96}
+resmng[97] = {name = "丈八蛇矛", type = "arm", range = 3, skill = 392, suit = 0, points = 12, id = 97}
+resmng[98] = {name = "方天画戟", type = "arm", range = 4, skill = 393, suit = 3, points = 12, id = 98}
+resmng[99] = {name = "麒麟弓", type = "arm", range = 5, skill = 394, suit = 1, points = 5, id = 99}
+resmng[100] = {name = "八卦阵", type = "armor", skill = 395, suit = 0, points = 2, id = 100}
+resmng[101] = {name = "八卦阵", type = "armor", skill = 395, suit = 2, points = 2, id = 101}
+resmng[102] = {name = "仁王盾", type = "armor", skill = 396, suit = 2, points = 2, id = 102}
+resmng[103] = {name = "的卢", type = "add_horse", suit = 2, points = 5, id = 103}
+resmng[104] = {name = "绝影", type = "add_horse", suit = 0, points = 5, id = 104}
+resmng[105] = {name = "爪黄飞电", type = "add_horse", suit = 1, points = 13, id = 105}
+resmng[106] = {name = "赤兔", type = "sub_horse", suit = 1, points = 5, id = 106}
+resmng[107] = {name = "紫骍", type = "sub_horse", suit = 3, points = 13, id = 107}
+resmng[108] = {name = "大宛", type = "sub_horse", suit = 0, points = 13, id = 108}
 
 -- 武将配置
 resmng[201] = {name = "黄月英", module_name = "huang_yue_ying", life = 3, sex = "woman", skills = {301, 302}}
@@ -137,7 +137,7 @@ resmng[215] = {name = "大乔", module_name = "da_qiao", life = 3, sex = "woman"
 resmng[216] = {name = "孙尚香", module_name = "sun_shang_xiang", life = 3, sex = "woman", skills = {323, 324}}
 resmng[217] = {name = "吕蒙", module_name = "lv_meng", life = 4, sex = "man", skills = {325}}
 resmng[218] = {name = "周瑜", module_name = "zhou_yu", life = 3, sex = "man", skills = {326, 327}}
-resmng[219] = {name = "孙权", module_name = "sun_quan", life = 4, sex = "man", kills = {328}}
+resmng[219] = {name = "孙权", module_name = "sun_quan", life = 4, sex = "man", skills = {328}}
 resmng[220] = {name = "甘宁", module_name = "gan_ning", life = 4, sex = "man", skills = {329}}
 resmng[221] = {name = "陆逊", module_name = "lu_xvn", life = 3, sex = "man", skills = {330, 331}}
 resmng[222] = {name = "黄盖", module_name = "huang_gai", life = 4, sex = "man", skills = {332}}
@@ -269,7 +269,7 @@ resmng[392] = "丈八蛇矛"
 resmng[393] = "方天画戟"
 resmng[394] = "麒麟弓"
 resmng[395] = "八卦阵"
-resmng[396] = "仁王盾" 
+resmng[396] = "仁王盾"
 
 function resmng.check_card(id)
     if resmng[id] and id >= resmng.card_start_id and id <= resmng.card_finish_id then
@@ -285,7 +285,7 @@ end
 
 function resmng.get_skill_id(skill_name)
     for id = resmng.skill_start_id, resmng.skill_finish_id, 1 do
-        if resmng[id].name == skill_name then
+        if resmng[id] == skill_name then
             return id
         end
     end

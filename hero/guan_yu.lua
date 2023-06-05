@@ -1,15 +1,18 @@
 GuanYu = class(Player)
 
 GuanYu.check_skill["武圣"] = function (self)
-    if not self:check_can_kill() then
-        return false
+    local cards = {}
+    local func = function(id) return self:get_color(id) == macro.color.red end
+    if self:check_can_kill() and next(self:get_players_in_attack_range()) then
+        helper.insert(cards, self:get_cards(func, true, true))
     end
-    local func = function (id) return self:get_color(id) == macro.color.red end
-    local cards = self:get_cards(func, true, true)
-    if self.arm and resmng[self.arm].name == "诸葛连弩" and self:get_color(self.arm) == macro.color.red then
-        if self.flags["杀-剩余次数"] == 0 then
-            helper.remove(cards, self.arm)
+    if self.arm and self:get_color(self.arm) == macro.color.red then
+        local arm_id = self.arm
+        self:take_off_equip(arm_id)
+        if not (self:check_can_kill() and next(self:get_players_in_attack_range())) then
+            helper.remove(cards, arm_id)
         end
+        self:put_on_equip(arm_id)
     end
     if not next(cards) then
         return false
@@ -18,20 +21,19 @@ GuanYu.check_skill["武圣"] = function (self)
 end
 
 GuanYu.skill["武圣"] = function (self, reason, ...)
-    if not reason then
-        reason = "正常出杀"
-    end
+    local func = function(id) return self:get_color(id) == macro.color.red end
     if reason == "南蛮入侵" or reason == "决斗" then
-        local func = function (id) return self:get_color(id) == macro.color.red end
         opt["弃置一张牌"](self, self, "武圣", true, true, false, func)
     else
-        local func = function (id) return self:get_color(id) == macro.color.red end
         local cards = self:get_cards(func, true, true)
         if reason == "正常出杀" then
-            if self.arm and resmng[self.arm].name == "诸葛连弩" and self:get_color(self.arm) == macro.color.red then
-                if self.flags["杀-剩余次数"] == 0 then
-                    helper.remove(cards, self.arm)
+            if self.arm and self:get_color(self.arm) == macro.color.red then
+                local arm_id = self.arm
+                self:take_off_equip(arm_id)
+                if not (self:check_can_kill() and next(self:get_players_in_attack_range())) then
+                    helper.remove(cards, arm_id)
                 end
+                self:put_on_equip(arm_id)
             end
         end
         local id = query["选择一张牌"](cards, "武圣")

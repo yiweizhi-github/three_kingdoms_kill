@@ -8,7 +8,7 @@ Player.respond = {}
 Player.skill = {}
 -- 检查某个主动技能是否可以发动
 Player.check_skill = {}
--- 获取某张卡或某个目标可以操作的目标玩家
+-- 获取某张卡或某个技能可以操作的目标玩家
 Player.get_targets = {}
 -- 获取一个t, 该t存储某个技能可以操作的玩家和卡, 不同技能的t的内部结构也不同, 但都是key_value的形式
 Player.get_t = {}
@@ -45,34 +45,26 @@ function Player:has_flag(flag_name)
     return self.flags[flag_name]
 end
 
-function Player:get_card_limit()
-    return self.life_limit
+function Player:get_hand_cards_limit()
+    return self.life
 end
 
-function Player:has_equip(id)
-    local type = resmng[id].type
-    if type == "arm" and self.arm then
-        return true
-    elseif type == "armor" and self.armor then
-        return true
-    elseif type == "add_horse" and self.add_horse then
-        return true
-    elseif type == "sub_horse" and self.sub_horse then
-        return true
-    else
-        return false
-    end
+function Player:has_equip(type)
+    return self[type] and true or false
 end
 
 function Player:get_equip_cards()
     local cards = {}
     if self.arm then
         helper.insert(cards, self.arm)
-    elseif self.armor then
+    end
+    if self.armor then
         helper.insert(cards, self.armor)
-    elseif self.add_horse then
+    end
+    if self.add_horse then
         helper.insert(cards, self.add_horse)
-    elseif self.sub_horse then
+    end
+    if self.sub_horse then
         helper.insert(cards, self.sub_horse)
     end
     return cards
@@ -80,30 +72,18 @@ end
 
 function Player:put_on_equip(id)
     local type = resmng[id].type
-    if type == "arm" then
-        self.arm = id
-    elseif type == "armor" then
-        self.armor = id
-    elseif type == "add_horse" then
-        self.add_horse = id
-    elseif type == "sub_horse" then
-        self.sub_horse = id
+    self[type] = id
+    if type == "arm" or type == "armor" then
+        helper.insert(self.skills, resmng[id].skill)
     end
-    helper.insert(self.skills, resmng[id].skill)
 end
 
 function Player:take_off_equip(id)
     local type = resmng[id].type
-    if type == "arm" then
-        self.arm = nil
-    elseif type == "armor" then
-        self.armor = nil
-    elseif type == "add_horse" then
-        self.add_horse = nil
-    elseif type == "sub_horse" then
-        self.sub_horse = nil
+    self[type] = nil
+    if type == "arm" or type == "armor" then
+        helper.remove(self.skills, resmng[id].skill)
     end
-    helper.remove(self.skills, resmng[id].skill)
 end
 
 function Player:get_distance(another)
@@ -121,10 +101,7 @@ end
 
 function Player:get_players_in_attack_range()
     local targets = {}
-    local attack_range = 1
-    if self.arm then
-        attack_range = resmng[self.arm].attack_range
-    end
+    local attack_range = self.arm and resmng[self.arm].range or 1
     for _, target in ipairs(game:get_other_players(self)) do
         if self:get_distance(target) <= attack_range then
             helper.insert(targets, target)
@@ -133,14 +110,14 @@ function Player:get_players_in_attack_range()
     return targets
 end
 
-function Player.get_suit(id)
+function Player:get_suit(id)
     return resmng[id].suit
 end
 
 function Player:get_color(id)
-    local suit = self.get_suit(id)
+    local suit = self:get_suit(id)
     if suit == macro.suit.spade or suit == macro.suit.club then
-        return macro.suit.heart
+        return macro.color.black
     else
         return macro.color.red
     end
@@ -187,10 +164,9 @@ function Player:flip()
     if self.toward == macro.toward.up then
         self.toward = macro.toward.down
         helper.remove(self.skills, resmng[self.hero_id].skills)
-    -- false表示背面翻回正面，获得武将技能，
     else
         self.toward = macro.toward.up
-        helper.insert(self.skills, resmng[self.hero].skills)
+        helper.insert(self.skills, resmng[self.hero_id].skills)
     end
 end
 
@@ -239,9 +215,12 @@ function Player:judge()
     if self:has_flag("跳过判定") then
         return
     end
-    while next(self.judge_cards) do
-        local id = self.judge_cards[#self.judge_cards]
-        local name = game.get_judeg_card_name(id)
+    local judge_cards = {}
+    for _, id in ipairs(self.judge_cards) do
+        helper.insert(judge_cards, id)
+    end
+    for _, id in ipairs(judge_cards) do
+        local name = game:get_judge_card_name(id)
         self.respond[name](self, id)
         if name == "乐不思蜀" then
             game.transfer_delay_tactics[id] = nil
@@ -298,7 +277,7 @@ function Player:discard()
     if self:has_flag("跳过弃牌") then
         return
     end
-    local hand_cards_limit = self:get_card_limit()
+    local hand_cards_limit = self:get_hand_cards_limit()
     local n = #self.hand_cards - hand_cards_limit
     if n > 0 then
         local cards = opt["弃置n张牌"](self, self, "普通弃牌", true, false, n)
@@ -306,6 +285,7 @@ function Player:discard()
             for _, player in ipairs(settle_players) do
                 if player:has_skill("固政") then
                     player.skill["固政"](player, self, cards)
+                    break
                 end
             end
     end
@@ -334,10 +314,17 @@ function Player:after_settle(id)
         helper.pop(game.settling_card)
         if type(id) == "number" and resmng[id].name == "南蛮入侵" then
             local settle_players = game:get_settle_players(game.whose_turn)
+            local need_discard = true
             for _, player in ipairs(settle_players) do
                 if player:has_skill("巨象") then
-                    player.skill["巨象"](player, id)
+                    if player.skill["巨象"](player, id) then
+                        need_discard = false
+                    end
+                    break
                 end
+            end
+            if need_discard then
+                helper.insert(deck.discard_pile, id)
             end
         else
             helper.insert(deck.discard_pile, id)
@@ -382,11 +369,12 @@ function Player:use_card(id)
             self:after_settle(id)
         end
     else
-        if not self:has_equip(id) then
+        if not self:has_equip(type) then
             self:put_on_equip(id)
         else
-            self:take_off_equip(id)
-            helper.insert(deck.discard_pile, id)
+            local old_equip_id = self[type]
+            self:take_off_equip(old_equip_id)
+            helper.insert(deck.discard_pile, old_equip_id)
             self:put_on_equip(id)
         end
     end
@@ -400,7 +388,7 @@ function Player:get_can_use_cards()
         if type ~= "basic" and type ~= "tactic" then
             helper.insert(cards, id)
         elseif name == "杀" then
-            if self:check_can_kill({id = id}) then
+            if self:check_can_kill() and next(self.get_targets["杀"](self, {id = id})) then
                 helper.insert(cards, id)
             end
         elseif name == "闪" or name == "无懈可击" then
@@ -439,7 +427,13 @@ function Player:get_can_use_skills()
 end
 
 function Player:use_skill(id)
-    self.skill[resmng[id]](self)
+    if resmng[id] == "武圣" then
+        self.skill["武圣"](self, "正常出杀")
+    elseif resmng[id] == "龙胆" then
+        self.skill["龙胆"](self, "正常出杀")
+    else
+        self.skill[resmng[id]](self)
+    end
 end
 
 Player.skill["杀"] = function (self, id, reason, ...)
@@ -462,17 +456,17 @@ function Player:get_skills_can_be_card(card_name)
     local skills = {}
     if card_name == "杀" then
         for _, id in ipairs(self.skills) do
-            if resmng[id].name == "武圣" then
+            if resmng[id] == "武圣" then
                 local func = function (id1) return self:get_color(id1) == macro.color.red end
                 if next(self:get_cards(func, true, true)) then
                     helper.insert(skills, id)
                 end
-            elseif resmng[id].name == "龙胆" then
+            elseif resmng[id] == "龙胆" then
                 local func = function (id1) return resmng[id1].name == "闪" end
                 if next(self:get_cards(func, true)) then
                     helper.insert(skills, id)
                 end
-            elseif resmng[id].name == "丈八蛇矛" then
+            elseif resmng[id] == "丈八蛇矛" then
                 if self.hand_cards >= 2 then
                     helper.insert(skills, id)
                 end
@@ -480,41 +474,27 @@ function Player:get_skills_can_be_card(card_name)
         end
     elseif card_name == "闪" then
         for _, id in ipairs(self.skills) do
-            if resmng[id].name == "倾国" then
+            if resmng[id] == "倾国" then
                 local func = function (id1) return self:get_color(id1) == macro.color.black end
                 if next(self:get_cards(func, true)) then
                     helper.insert(skills, id)
                 end
-            elseif resmng[id].name == "龙胆" then
+            elseif resmng[id] == "龙胆" then
                 local func = function (id1) return resmng[id1].name == "杀" end
                 if next(self:get_cards(func, true)) then
                     helper.insert(skills, id)
                 end
             end
         end
-    elseif card_name == "桃" then
-        for _, id in ipairs(self.skills) do
-            if resmng[id].name == "涅槃" then
-                if not self["已使用涅槃"] then
-                    helper.insert(skills, id)
-                end
-            elseif resmng[id].name == "急救" then
-                local func = function (id1) return self:get_color(id1) == macro.color.red end
-                local cards = self:get_cards(func, true, true)
-                if next(cards) and game.whose_turn ~= self then
-                    helper.insert(skills, id)
-                end
-            end
-        end
     elseif card_name == "无懈可击" then
         for _, id in ipairs(self.skills) do
-            if resmng[id].name == "看破" then
+            if resmng[id] == "看破" then
                 local func = function (id1) return self:get_color(id1) == macro.color.black end
                 local cards = self:get_cards(func, true)
                 if next(cards) then
                     helper.insert(skills, id)
                 end
-            elseif resmng[id].name == "解围" then
+            elseif resmng[id] == "解围" then
                 local cards = self:get_cards(nil, false, true)
                 if next(cards) then
                     helper.insert(skills, id)
@@ -528,7 +508,7 @@ end
 Player.get_targets["乱武"] = function (self)
     local targets = {}
     local min_dis
-    for _, target in ipairs(self.get_players_in_attack_range()) do
+    for _, target in ipairs(self:get_players_in_attack_range()) do
         local dis = self:get_distance(target)
         if next(targets) then
             if dis < min_dis then
@@ -581,11 +561,8 @@ Player.respond["乱武"] = function (self)
     end
 end
 
-function Player:check_can_kill(t)
+function Player:check_can_kill()
     if self:has_flag("天义-输") then
-        return false
-    end
-    if not next(self.get_targets["杀"](self, t)) then
         return false
     end
     if not (self:has_skill("诸葛连弩") or self:has_skill("咆哮") or self.flags["杀-剩余次数"] > 0) then
@@ -605,6 +582,9 @@ end
 --     damage = {}}
 
 Player.use["杀"] = function (self, t, reason, ...)
+    if self:has_skill("克己") and game.whose_turn == self then
+        self.flags["使用或打出过杀"] = true
+    end
     if not reason then
         reason = "正常出杀"
     end
@@ -626,9 +606,15 @@ end
 function Player:kill_set_target(t, targets)
     t.targets = {}
     local target = query["选择一名玩家"](targets, "杀")
-    helper.insert(t.targets, target)
     if target:has_skill("流离") then
-        target.skill["流离"](target, self, t)
+        local new_target = target.skill["流离"](target, self)
+        if new_target then
+            helper.insert(t.targets, new_target)
+        else
+            helper.insert(t.targets, target)
+        end
+    else
+        helper.insert(t.targets, target)
     end
     self:kill_set_extra_target(t)
 end
@@ -661,26 +647,37 @@ function Player:kill_set_extra_target(t)
     end
 
     local targets = self.get_targets["杀"](self, t)
-    helper.remove(targets, t.targets)
+    if game.old_kill_target then
+        helper.remove(targets, game.old_kill_target)
+        game.old_kill_target = nil
+    else
+        helper.remove(targets, t.targets)
+    end
     if n > #targets then
         n = #targets
     end
-    if n > 1 then
-        helper.text("本次杀你可以额外指定%d名目标", n)    
+    if n > 0 then
+        text("本次杀你可以额外指定%d名目标", n)    
     end
 
     for i = 1, n, 1 do
         if not next(targets) then
             break
         end
-        if i > 1 and not query["二选一"]["是否继续指定杀的目标"] then
+        if not query["二选一"]("是否继续指定杀的目标") then
             break
         end
         local target = query["选择一名玩家"](targets, "杀")
-        helper.insert(t.targets, target)
         helper.remove(targets, target)
         if target:has_skill("流离") then
-            target.skill["流离"](target, self, t)
+            local new_target = target.skill["流离"](target, self)
+            if new_target then
+                helper.insert(t.targets, new_target)
+            else
+                helper.insert(t.targets, target)
+            end
+        else
+            helper.insert(t.targets, target)
         end
     end
     
@@ -692,9 +689,12 @@ function Player:kill_set_extra_target(t)
 end
 
 function Player:kill_set_args(t)
-    t.need_dodge = 1
-    if self:has_skill("无双") then
-        t.need_dodge = t.need_dodge + 1
+    t.need_dodge = {}
+    for _, target in ipairs(t.targets) do
+        t.need_dodge[target] = 1
+        if self:has_skill("无双") then
+            t.need_dodge[target] = t.need_dodge[target] + 1
+        end
     end
 
     t.can_dodge = {}
@@ -746,52 +746,54 @@ Player.respond["杀"] = function (self, causer, t)
         self:sub_life({causer = causer, type = macro.sub_life_type.damage, name = "杀", card_id = t.id, n = t.damage[self]})
         return
     end
-    local dodge_success = true
-    if not causer:has_skill("青釭剑") and (self:has_skill("八卦阵") or self:has_skill("八阵")) then
-        for _ = 1, t.need_dodge, 1 do
-            if self:has_skill("八卦阵") and self.skill["八卦阵"](self) or self:has_skill("八阵") and self.skill["八阵"](self) then
+    if not causer:has_skill("青釭剑") then
+        local skill_name
+        if self:has_skill("八卦阵") then
+            skill_name = "八卦阵"
+        elseif self:has_skill("八阵") then
+            skill_name = "八阵"
+        end
+        if skill_name then
+            while t.need_dodge[self] > 0 do
+                if self.skill[skill_name](self) then
+                    t.need_dodge[self] = t.need_dodge[self] - 1
+                else
+                    break
+                end
+            end
+        end
+    end
+    while t.need_dodge[self] > 0 do
+        local func = function (id) return resmng[id].name == "闪" end
+        local dodges = self:get_cards(func, true)
+        local skills = self:get_skills_can_be_card("闪")
+        if next(dodges) or next(skills) then
+            local id = query["询问出牌"](dodges, skills, "闪")
+            if resmng.check_card(id) then
+                helper.remove(self.hand_cards, id)
+                game.skill["失去手牌"](game, self, self, "使用")
+                helper.insert(deck.discard_pile, id)
                 if game.finish then
                     return
                 end
+                t.need_dodge[self] = t.need_dodge[self] - 1
+            elseif resmng.check_skill(id) then
+                self.skill["闪"](self, id, "被杀")
+                t.need_dodge[self] = t.need_dodge[self] - 1
             else
-                dodge_success = false
-                break
+                break        
             end
-        end
-    else
-        dodge_success = false
-    end
-    if not dodge_success then
-        for _ = 1, t.need_dodge, 1 do
-            local func = function (id) return resmng[id].name == "闪" end
-            local dodges = self:get_cards(func, true)
-            local skills = self:get_skills_can_be_card("闪")
-            if next(dodges) or next(skills) then
-                local id = query["询问出牌"](dodges, skills, "闪")
-                if resmng.check_card(id) then
-                    helper.remove(self.hand_cards, id)
-                    game.skill["失去手牌"](game, self, self, "使用")
-                    helper.insert(deck.discard_pile, id)
-                    if game.finish then
-                        return
-                    end
-                elseif resmng.check_skill(id) then
-                    self.skill["闪"](self, id, "被杀")
-                else
-                    dodge_success = false
-                    break        
-                end
-            else
-                dodge_success = false
-                break     
-            end
+        else
+            break     
         end
     end
-    if dodge_success and causer:check_alive() then
-        if causer:has_skill("贯石斧") then
-            causer.skill["贯石斧"](causer, self, t)
-        elseif causer:has_skill("青龙偃月刀") then
-            causer.skill["青龙偃月刀"](causer, self, t)
+    if t.need_dodge[self] == 0 then
+        if causer:check_alive() then
+            if causer:has_skill("贯石斧") then
+                causer.skill["贯石斧"](causer, self, t)
+            elseif causer:has_skill("青龙偃月刀") then
+                causer.skill["青龙偃月刀"](causer, self)
+            end
         end
     else
         self:sub_life({causer = causer, type = macro.sub_life_type.damage, name = "杀", card_id = t.id, n = t.damage[self]})
@@ -846,14 +848,7 @@ Player.skill["八卦阵"] = function (self)
     if not (self:has_skill("天妒") and self.skill["天妒"](self, id)) then
         helper.insert(deck.discard_pile, id)   
     end
-    if self:get_suit(id) == macro.color.red then
-        if self:has_skill("雷击") then
-            self.skill["雷击"](self)
-        end
-        return true
-    else
-        return false
-    end
+    return self:get_suit(id) == macro.color.red and true or false
 end
 
 Player.check_skill["丈八蛇矛"] = function (self)
@@ -916,7 +911,7 @@ Player.skill["贯石斧"] = function (self, target, t)
     target:sub_life({causer = self, type = macro.sub_life_type.damage, name = "杀", card_id = t.id, n = t.damage[target]})
 end
 
-Player.skill["青龙偃月刀"] = function (self, target, t)
+Player.skill["青龙偃月刀"] = function (self, target)
     local func = function (id) return resmng[id].name == "杀" end
     local kills = self:get_cards(func, true)
     local skills = self:get_skills_can_be_card("杀")
@@ -928,17 +923,28 @@ Player.skill["青龙偃月刀"] = function (self, target, t)
     end
     local id = query["询问出牌"](kills, skills, "杀")
     if resmng.check_card(id) then
+        if target:has_skill("流离") then
+            local new_target = target.skill["流离"](target, self)
+            target = new_target or target
+        end
         helper.remove(self.hand_cards, id)
         game.skill["失去手牌"](game, self, self, "使用")
         self:before_settle(id)
         self.use["杀"](self, {id = id}, "青龙偃月刀", target)
         self:after_settle(id)
     elseif resmng.check_skill(id) then
+        if target:has_skill("流离") then
+            local new_target = target.skill["流离"](target, self)
+            target = new_target or target
+        end
         self.skill["杀"](self, id, "青龙偃月刀", target)
     end
 end
 
-Player.skill["寒冰剑"] = function (self, target, t)
+Player.skill["寒冰剑"] = function (self, causer, target, t)
+    if self ~= causer then
+        return
+    end
     local cards = target:get_cards(nil, true, true)
     if not next(cards)  then
         return
@@ -954,7 +960,10 @@ Player.skill["寒冰剑"] = function (self, target, t)
     end
 end
 
-Player.skill["麒麟弓"] = function (self, target)
+Player.skill["麒麟弓"] = function (self, causer, target)
+    if self ~= causer then
+        return
+    end
     local func = function (id) return resmng[id].type == "add_horse" or resmng[id].type == "sub_horse" end
     if not next(target:get_cards(func, false, true)) then
         return
@@ -978,6 +987,7 @@ function Player:sub_life(t)
     -- 体力流失
     if t.type == macro.sub_life_type.life_loss then
         self.life = self.life - t.n
+        text("%s因%s流失%d点体力", self.name, t.name, t.n)
         if self.life <= 0 then
             self:dying(t)
         end
@@ -996,7 +1006,13 @@ function Player:sub_life(t)
         if t.settle_finish then
             return
         end
+        if t.causer:has_skill("狂骨") then
+            if t.causer:get_distance(self) <= 1 then
+                t.causer["狂骨"] = true
+            end
+        end
         self.life = self.life - t.n
+        text("%s因%s受到%d点伤害", self.name, t.name, t.n)
         if self.life <= 0 then
             self:dying(t)
         end
@@ -1014,9 +1030,9 @@ end
 -- 造成伤害时
 Player.skill["造成伤害时"] = function (self, causer, responder, t)
     if self:has_skill("寒冰剑") then
-        self.skill["寒冰剑"](self, responder, t)
+        self.skill["寒冰剑"](self, causer, responder, t)
     elseif self:has_skill("麒麟弓") then
-        self.skill["麒麟弓"](self, responder)
+        self.skill["麒麟弓"](self, causer, responder)
     end
 end
 
@@ -1028,19 +1044,30 @@ end
 -- 濒死
 function Player:dying(t)
     local settle_players
-    if t.causer:has_skill("完杀") and game.whose_turn == t.causer then
-        settle_players = {t.causer, t.responder}
+    if game.whose_turn:has_skill("完杀") then
+        settle_players = game.whose_turn == self and {self} or {game.whose_turn, self}
     else
         settle_players = game:get_settle_players(game.whose_turn)
     end
-    local func = function (id) return resmng[id].name == "桃" end
+    local check_peach_func = function (id) return resmng[id].name == "桃" end
     for _, player in ipairs(settle_players) do
         if player == self and self:has_skill("不屈") then
             self.skill["不屈"](self)
         end
         while self.life <= 0 do
-            local peachs = player:get_cards(func, true)
-            local skills = player:get_skills_can_be_card("桃")
+            local peachs = player:get_cards(check_peach_func, true)
+            local skills = {}
+            if player == self and self:has_skill("涅槃") then
+                if not self["已使用涅槃"] then
+                    helper.insert(skills, resmng.get_skill_id("涅槃"))   
+                end
+            elseif player:has_skill("急救") then
+                local check_red_func = function (id) return self:get_color(id) == macro.color.red end
+                local cards = self:get_cards(check_red_func, true, true)
+                if next(cards) and game.whose_turn ~= self then
+                    helper.insert(skills, resmng.get_skill_id("急救"))
+                end
+            end
             if next(peachs) or next(skills) then
                 local id = query["询问出牌"](peachs, skills, "桃")
                 if resmng.check_card(id) then
@@ -1050,10 +1077,10 @@ function Player:dying(t)
                     player.use["桃"](player, self)
                     player:after_settle(id)
                 elseif resmng.check_skill(id) then
-                    if resmng[id].name == "急救" then
+                    if resmng[id] == "急救" then
                         player.skill["急救"](player, self)
-                    elseif resmng[id].name == "涅槃" then
-                        player.skill["涅槃"](player)
+                    elseif resmng[id] == "涅槃" then
+                        self.skill["涅槃"](self)
                     end
                 else
                     break
@@ -1066,7 +1093,8 @@ function Player:dying(t)
             break
         end
     end
-    if self <= 0 then
+    if self.life <= 0 then
+        text("%s已死亡", self.name)
         for _, player in ipairs(settle_players) do
             if player == self and self:has_skill("断肠") then
                 self.skill["断肠"](self, t.causer)
@@ -1079,21 +1107,12 @@ function Player:dying(t)
             helper.insert(cards, self.hand_cards)
             helper.clear(self.hand_cards)
         end
-        if self.arm then
-            helper.insert(cards, self.arm)
-            self.arm = nil
-        end
-        if self.armor then
-            helper.insert(cards, self.armor)
-            self.armor = nil
-        end
-        if self.add_horse then
-            helper.insert(cards, self.add_horse)
-            self.add_horse = nil
-        end
-        if self.sub_horse then
-            helper.insert(cards, self.sub_horse)
-            self.sub_horse = nil
+        for _, id in ipairs(self:get_equip_cards()) do
+            local type = resmng[id].type
+            if self[type] then
+                helper.insert(cards, self[type])
+                self[type] = nil
+            end
         end
         if next(self.judge_cards) then
             helper.insert(cards, self.judge_cards)
@@ -1110,6 +1129,12 @@ function Player:dying(t)
         end
         helper.insert(deck.discard_pile, cards)
         helper.remove(game.players, self)
+        for i = self.order, #game.players, 1 do
+            game.players[i].order = i
+        end
+        if #game.players == 1 then
+            game.finish = true
+        end
     end
 end
 
@@ -1126,17 +1151,31 @@ end
 Player.get_targets["杀"] = function (self, t)
     local targets = {}
     for _, target in ipairs(game:get_other_players(self)) do
-        if not (target:has_skill("空城") and #target == 0) then
+        if target:has_skill("空城") and #target.hand_cards == 0 then
+            goto continue
+        end
+        if t.is_transfer then
+            if t.transfer_type == "神速" then
+                helper.insert(targets, target)
+            elseif t.transfer_type == "武圣" then
+                if helper.element(self:get_players_in_attack_range(), target) then
+                    helper.insert(targets, target)   
+                end
+            elseif t.transfer_type == "龙胆" then
+                if helper.element(self:get_players_in_attack_range(), target) then
+                    helper.insert(targets, target)
+                end
+            end
+        else
             if self:has_flag("天义-赢") then
                 helper.insert(targets, target)
-            elseif not t.is_transfer and self:has_skill("烈弓") and resmng[t.id].points > self:get_distance(target) then
-                helper.insert(targets, target)
-            elseif t.is_transfer and t.transfer_type == "神速" then
+            elseif self:has_skill("烈弓") and resmng[t.id].points >= self:get_distance(target) then
                 helper.insert(targets, target)
             elseif helper.element(self:get_players_in_attack_range(), target) then
                 helper.insert(targets, target)
             end
         end
+        ::continue::
     end
     return targets
 end
@@ -1282,7 +1321,7 @@ Player.respond["南蛮入侵"] = function (self, causer, id)
             game.skill["失去手牌"](game, self, self, "打出")
             helper.insert(deck.discard_pile, id1)
         elseif resmng.check_skill(id1) then
-            self.skill["杀"](self, id, "南蛮入侵")
+            self.skill["杀"](self, id1, "南蛮入侵")
         else
             self:sub_life({causer = causer, type = macro.sub_life_type.damage, name = "南蛮入侵", card_id = id, n = 1})
         end
@@ -1327,7 +1366,7 @@ Player.respond["万箭齐发"] = function (self, causer, id)
                 self.skill["雷击"](self)
             end
         elseif resmng.check_skill(id1) then
-            self.skill["闪"](self, id, "万箭齐发")
+            self.skill["闪"](self, id1, "万箭齐发")
         else
             self:sub_life({causer = causer, type = macro.sub_life_type.damage, name = "万箭齐发", card_id = id, n = 1})
         end
@@ -1433,24 +1472,32 @@ Player.respond["借刀杀人"] = function (self, causer, target)
     if next(kills) or next(skills) then
         local id = query["询问出牌"](kills, skills, "杀")
         if resmng.check_card(id) then
+            if target:has_skill("流离") then
+                local new_target = target.skill["流离"](target, self)
+                target = new_target or target
+            end
             helper.remove(self.hand_cards, id)
             game.skill["失去手牌"](game, self, self, "使用")
             self:before_settle(id)
             self.use["杀"](self, {id = id}, "借刀杀人", target)
             self:after_settle(id)
         elseif resmng.check_skill(id) then
+            if target:has_skill("流离") then
+                local new_target = target.skill["流离"](target, self)
+                target = new_target or target
+            end
             self.skill["杀"](self, id, "借刀杀人", target)
         else
             local arm_id = self.arm
             self:take_off_equip(arm_id)
             self.skill["失去装备"](self)
-            causer:put_on_equip(arm_id)
+            helper.insert(causer.hand_cards, arm_id)
         end
     else
         local arm_id = self.arm
         self:take_off_equip(arm_id)
         self.skill["失去装备"](self)
-        causer:put_on_equip(arm_id)
+        helper.insert(causer.hand_cards, arm_id)
     end
 end
 
@@ -1510,8 +1557,8 @@ Player.respond["决斗"] = function (self, causer, id)
 end
 
 -- 无懈可击
-Player["无懈可击"] = function (self, causer, is_valid)
-    local settle_players = game:get_settle_players(causer)
+Player["无懈可击"] = function (self, first_settle_player, is_valid)
+    local settle_players = game:get_settle_players(first_settle_player)
     for _, player in ipairs(settle_players) do
         local func = function (id) return resmng[id].name == "无懈可击" end
         local wxkjs = player:get_cards(func, true)
@@ -1523,10 +1570,10 @@ Player["无懈可击"] = function (self, causer, is_valid)
                 game.skill["失去手牌"](game, player, player, "使用")
                 self:before_settle(id)
                 self:after_settle(id)
-                return causer["无懈可击"](causer, player, not is_valid)
+                return first_settle_player["无懈可击"](first_settle_player, player, not is_valid)
             elseif resmng.check_skill(id) then
                 player.skill["无懈可击"](player, id)
-                return causer["无懈可击"](causer, player, not is_valid)
+                return first_settle_player["无懈可击"](first_settle_player, player, not is_valid)
             end  
         end       
     end
@@ -1534,17 +1581,19 @@ Player["无懈可击"] = function (self, causer, is_valid)
 end
 
 Player.use["乐不思蜀"] = function (self, id)
-    local targets = game.get_targets["乐不思蜀"](self, id)
+    local targets = self.get_targets["乐不思蜀"](self, id)
     local target = query["选择一名玩家"](targets, "乐不思蜀")
     helper.put(target.judge_cards, id)
 end
 
 Player.respond["乐不思蜀"] = function (self, id)
+    helper.remove(self.judge_cards, id)
     self:before_settle(id)
-    if self["无懈可击"](self, nil, false) then
+    if self["无懈可击"](self, self, false) then
         self:after_settle(id)
         return
     end
+    text("%s判定乐不思蜀", self.name)
     local judge_card_id = game:judge(self)
     if not (self:has_skill("天妒") and self.skill["天妒"](self, judge_card_id)) then
         helper.insert(deck.discard_pile, judge_card_id)   
@@ -1560,15 +1609,29 @@ Player.use["闪电"] = function (self, id)
 end
 
 Player.respond["闪电"] = function (self, id)
+    helper.remove(self.judge_cards, id)
     self:before_settle(id)
-    if self["无懈可击"](self, nil, false) then
+    local check_can_move = function (target)
+        if target:has_skill("帷幕") and (resmng[id].suit == macro.suit.club or resmng[id].suit == macro.suit.spade) then
+            return false
+        end
+        for _, id in ipairs(target.judge_cards) do
+            if game:get_judge_card_name(id) == "闪电" then
+                return false
+            end
+        end
+        return true
+    end
+    if self["无懈可击"](self, self, false) then
         local next_target = self.order + 1 <= #game.players and game.players[self.order + 1] or game.players[1]
-        if next_target:has_skill("帷幕") and (resmng[id].suit == macro.suit.club or resmng[id].suit == macro.suit.spade) then
-            next_target = self.order + 1 <= #game.players and game.players[self.order + 1] or game.players[1]    
+        while not check_can_move(next_target) do
+            next_target = self.order + 1 <= #game.players and game.players[self.order + 1] or game.players[1]
         end
         helper.pop(game.settling_card)
         helper.put(next_target.judge_cards, id)
+        return
     end
+    text("%s判定闪电", self.name)
     local judge_card_id = game:judge(self)
     if not (self:has_skill("天妒") and self.skill["天妒"](self, judge_card_id)) then
         helper.insert(deck.discard_pile, judge_card_id)   
@@ -1578,8 +1641,8 @@ Player.respond["闪电"] = function (self, id)
         self:after_settle(id)
     else
         local next_target = self.order + 1 <= #game.players and game.players[self.order + 1] or game.players[1]
-        if next_target:has_skill("帷幕") and (resmng[id].suit == macro.suit.club or resmng[id].suit == macro.suit.spade) then
-            next_target = self.order + 1 <= #game.players and game.players[self.order + 1] or game.players[1]    
+        while not check_can_move(next_target) do
+            next_target = self.order + 1 <= #game.players and game.players[self.order + 1] or game.players[1]
         end
         helper.pop(game.settling_card)
         helper.put(next_target.judge_cards, id)

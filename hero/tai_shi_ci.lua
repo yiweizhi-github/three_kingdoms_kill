@@ -11,7 +11,7 @@ TaiShiCi.get_targets["天义"] = function (self)
 end
 
 TaiShiCi.check_skill["天义"] = function (self)
-    if self.has_flag("使用过天义") then
+    if self:has_flag("使用过天义") then
         return false
     end
     if not next(self.get_targets["天义"](self)) then
@@ -26,6 +26,7 @@ TaiShiCi.skill["天义"] = function (self)
     local target = query["选择一名玩家"](targets, "天义")
     if game:compare_points(self, target) then
         self.flags["天义-赢"] = true
+        self.flags["杀-剩余次数"] = self.flags["杀-剩余次数"] + 1
     else
         self.flags["天义-输"] = true
     end

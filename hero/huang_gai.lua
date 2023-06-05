@@ -1,4 +1,5 @@
 HuangGai = class(Player)
+
 HuangGai.check_skill["苦肉"] = function (self)
     return true
 end

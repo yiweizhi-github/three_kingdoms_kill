@@ -10,10 +10,10 @@ end
 
 ZhouYu.skill["英姿"] = function (self)
     if not query["询问发动技能"]("英姿") then
-        return false
+        helper.insert(self.hand_cards, deck:draw(2))
+    else
+        helper.insert(self.hand_cards, deck:draw(3))
     end
-    helper.insert(self.hand_cards, deck:draw(3))
-    return true
 end
 
 ZhouYu.check_skill["反间"] = function (self)
@@ -30,7 +30,7 @@ ZhouYu.skill["反间"] = function (self)
     self.flags["使用过反间"] = true
     local targets = game:get_other_players(self)
     local target = query["选择一名玩家"](targets, "反间")
-    local suit = query["选择花色"]({macro.suit.club, macro.suit.diamond, macro.suit.heart, macro.suit.spade})
+    local suit = query["选择花色"]({macro.suit.spade, macro.suit.heart, macro.suit.club, macro.suit.diamond})
     local n = math.random(#self.hand_cards)
     local id = self.hand_cards[n]
     helper.remove(self.hand_cards, id)

@@ -83,7 +83,7 @@ opt["获得一张牌"] = function (causer, responder, reason, use_hand_cards, us
         responder:take_off_equip(id)
         responder.skill["失去装备"](responder)
     -- 拿别人手牌
-    elseif id== 0 then
+    elseif id == 0 then
         local n = math.random(#hand_cards)
         id = hand_cards[n]
         helper.remove(hand_cards, id)

@@ -1,7 +1,7 @@
 SiMaYi = class(Player)
 
 SiMaYi.skill["改判"] = function (self, id)
-    self.skill["鬼才"](self, id)
+    return self.skill["鬼才"](self, id)
 end
 
 SiMaYi.skill["鬼才"] = function (self, id)
@@ -14,7 +14,7 @@ SiMaYi.skill["鬼才"] = function (self, id)
     end
     local id1 = query["选择一张牌"](cards, "鬼才")
     helper.remove(self.hand_cards, id1)
-    helper.insert(deck.discard, id)
+    helper.insert(deck.discard_pile, id)
     return id1
 end
 

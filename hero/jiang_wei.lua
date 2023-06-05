@@ -12,7 +12,7 @@ JiangWei.skill["志继"] = function (self)
         return
     end
     if self.life < self.life_limit then
-        if not query["二选一"]["志继"] then
+        if not query["二选一"]("志继") then
             helper.insert(self.hand_cards, deck:draw(2))
         else
             self:add_life(1)

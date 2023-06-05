@@ -58,7 +58,7 @@ query["选一张明牌或抽一张暗牌"] = function (hand_cards, other_cards, 
     while true do
         text("正在结算%s，", reason)
         if next(other_cards) then
-            text("你可以选的牌为%s：，请输入你想选的牌id")
+            text("你可以选的牌为%s, 请输入你想选的牌id", t2s(other_cards))
         end
         if next(hand_cards) then
             text("输入0随机选一张手牌")
@@ -75,7 +75,7 @@ end
 query["选择一名玩家"] = function (targets, reason)
     while true do
         text("正在结算%s", reason)
-        text("你可以选的目标有%s，请输入你想选的目标id", t2s(targets))
+        text("你可以选的目标有%s, 请输入你想选的目标id", t2s(targets))
         local target_ids = {}
         for _, target in ipairs(targets) do
             helper.insert(target_ids, target.id)
@@ -117,6 +117,7 @@ str["二选一"]["观星"] = "输入1把牌放回牌堆顶，输入0把牌放回
 str["二选一"]["志继"] = "输入1摸两张牌，输入0回复1点体力"
 str["二选一"]["强袭"] = "输入1失去1点体力，输入0弃置1张装备牌"
 str["二选一"]["挑衅"] = "输入1对姜维出杀，输入0被姜维弃置1张牌"
+str["二选一"]["仁德"] = "输入1继续发动仁德，输入0不发动"
 
 query["二选一"] = function (reason)
     while true do
@@ -134,20 +135,11 @@ end
 
 query["选择花色"] = function (suits)
     while true do
-        text("你可以选择的花色为：")
+        text("你可以选择的花色为:")
         for i, suit in ipairs(suits) do
-            text(" %d-", i)
-            if suit == macro.suit.spade then
-                text("黑桃")
-            elseif suit == macro.suit.heart then
-                text("红桃")
-            elseif suit == macro.suit.club then
-                text("梅花")
-            elseif suit == macro.suit.diamond then
-                text("方块")
-            end
+            text("%d-%s", i, get_suit_str(suit))
         end
-        text("，请输入你想选的花色id")
+        text("请输入你想选的花色id")
         local id = io.read("n")
         if id >= 1 and id <= #suits then
             return suits[id]
@@ -174,15 +166,8 @@ query["观星-调整牌序"] = function (cards)
 end
 
 query["奇谋"] = function (life)
-    while true do
-        text("请输入你想失去的体力点数，不得超过当前体力，当前体力为：%d", life)
-        local n = io.read("n")
-        if n <= life then
-            return n
-        else
-            text("错误输入，请重新输入")
-        end
-    end
+    text("请输入你想失去的体力点数，当前体力为：%d", life)
+    return io.read("n")
 end
 
 return query

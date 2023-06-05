@@ -9,10 +9,13 @@ function XiaoQiao:get_suit(id)
 end
 
 XiaoQiao.skill["受到伤害时"] = function (self, causer, responder, t)
-    self.skill["天香"](self, t)
+    self.skill["天香"](self, responder, t)
 end
 
-XiaoQiao.skill["天香"] = function (self, t)
+XiaoQiao.skill["天香"] = function (self, responder, t)
+    if self ~= responder then
+        return
+    end
     local func = function (id) return self:get_suit(id) == macro.suit.heart end
     if not next(self:get_cards(func, true)) then
         return

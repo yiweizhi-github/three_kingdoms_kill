@@ -4,7 +4,7 @@ XvnYu.get_t["驱虎"] = function (self)
     local t = {}
     for _, target in ipairs(game:get_other_players(self)) do    
         if next(target.hand_cards) and target.life > self.life then
-            local targets = target.get_players_in_attack_range()
+            local targets = target:get_players_in_attack_range()
             if next(targets) then
                 t[target] = targets
             end
@@ -28,7 +28,7 @@ XvnYu.skill["驱虎"] = function (self)
     local t = self.get_t["驱虎"](self)
     local targets = helper.get_keys(t)
     local target = query["选择一名玩家"](targets, "驱虎")
-    if game.compare_points(self, target) then
+    if game:compare_points(self, target) then
         local target1 = query["选择一名玩家"](t[target], "驱虎")
         target1:sub_life({causer = target, type = macro.sub_life_type.damage, name = "驱虎", card_id = nil, n = 1})
     else
@@ -50,7 +50,7 @@ XvnYu.skill["节命"] = function (self, responder, t)
     for _ = 1, t.n, 1 do
         local target = query["选择一名玩家"](game.players, "节命")
         local limit = target.life_limit <= 5 and target.life_limit or 5
-        helper.insert(target.hand_cards, deck:draw(limit - target.life))
+        helper.insert(target.hand_cards, deck:draw(limit - #target.hand_cards))
     end
 end
 

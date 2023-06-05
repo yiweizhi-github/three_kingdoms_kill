@@ -42,7 +42,7 @@ XiaHouYuan.skill["神速-弃牌阶段开始前"] = function (self)
         return
     end
     self.flags["跳过弃牌"] = true
-    game.flip(self)
+    self:flip()
     self.use["杀"](self, {is_transfer = true, transfer_type = "神速", id = nil}, "神速")
 end
 

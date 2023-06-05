@@ -18,7 +18,7 @@ ZhangZhaoZhangHong.get_t["直谏"] = function (self)
     for _, id in ipairs(cards) do
         local targets = {}
         for _, target in ipairs(game:get_other_players(self)) do
-            if not target:has_equip(id) then
+            if not target:has_equip(resmng[id].type) then
                 helper.insert(targets, target)
             end
         end

@@ -10,7 +10,7 @@ WoLongZhuGe.skill["看破"] = function (self)
 end
 
 WoLongZhuGe.skill["八阵"] = function (self)
-    if not self.armor then
+    if self.armor then
         return false
     end
     if not query["询问发动技能"]("八阵") then

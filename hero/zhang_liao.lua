@@ -23,9 +23,10 @@ ZhangLiao.skill["突袭"] = function (self)
     end
     local target = query["选择一名玩家"](targets, "突袭")
     opt["获得一张牌"](self, target, "突袭", true)
+    helper.remove(targets, target)
     if next(targets) then
-        if not query["二选一"]["是否继续指定突袭的目标"] then
-            return true
+        if not query["二选一"]("是否继续指定抽牌的目标") then
+            return
         end
         local target1 = query["选择一名玩家"](targets, "突袭")
         opt["获得一张牌"](self, target1, "突袭", true)

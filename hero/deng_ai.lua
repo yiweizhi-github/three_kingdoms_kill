@@ -5,8 +5,10 @@ function DengAi:ctor()
 end
 
 function DengAi:get_distance(another)
-    local dis = self.super.get_distance(another)
-    dis = dis - #self["田"]
+    local dis = Player.get_distance(self, another)
+    if self:has_skill("屯田") then
+        dis = dis - #self["田"]
+    end
     return dis > 0 and dis or 0
 end
 

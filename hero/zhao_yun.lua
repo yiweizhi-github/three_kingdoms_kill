@@ -5,16 +5,17 @@ ZhaoYun.check_skill["龙胆"] = function (self)
         return false
     end
     local func = function (id) return resmng[id].name == "闪" end
-    if not next(self:get_cards(func, true)) then
+    local cards = {}
+    if self:check_can_kill() and next(self:get_players_in_attack_range()) then
+        helper.insert(cards, self:get_cards(func, true))
+    end
+    if not next(cards) then
         return false
     end
     return true
 end
 
 ZhaoYun.skill["龙胆"] = function (self, reason, ...)
-    if not reason then
-        reason = "正常出杀"
-    end
     if reason == "被杀" or reason == "万箭齐发" then
         local func = function (id) return resmng[id].name == "杀" end
         local cards = self:get_cards(func, true)

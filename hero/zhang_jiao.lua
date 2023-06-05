@@ -1,7 +1,7 @@
 ZhangJiao = class(Player)
 
 ZhangJiao.skill["改判"] = function (self, id)
-    self.skill["鬼道"](self, id)
+    return self.skill["鬼道"](self, id)
 end
 
 ZhangJiao.skill["鬼道"] = function (self, id)

@@ -14,11 +14,14 @@ SunQuan.skill["制衡"] = function (self)
     self.flags["使用过制衡"] = true
     local cards = self:get_cards(nil, true, true)
     local zhiheng_cards = {}
+    local id = query["选择一张牌"](cards, "制衡")
+    helper.remove(cards, id)
+    helper.insert(zhiheng_cards, id)
     while next(cards) do
         if not query["二选一"]("制衡") then
             break
         end
-        local id = query["选择一张牌"](cards, "制衡")
+        id = query["选择一张牌"](cards, "制衡")
         helper.remove(cards, id)
         helper.insert(zhiheng_cards, id)
     end

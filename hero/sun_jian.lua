@@ -13,7 +13,7 @@ SunJian.skill["英魂"] = function (self)
         return
     end
     local target = query["选择一名玩家"](game:get_other_players(self), "英魂")
-    if query["二选一"]["英魂"] then
+    if query["二选一"]("英魂") then
         helper.insert(target.hand_cards, deck:draw(n))
         opt["弃置一张牌"](target, target, "英魂", true, true)
     else

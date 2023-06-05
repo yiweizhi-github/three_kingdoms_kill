@@ -1,9 +1,9 @@
 MaChao = class(Player)
 
 function MaChao:get_distance(another)
-    local dis = self.super.get_distance(another)
+    local dis = Player.get_distance(self, another)
     dis = dis - 1
-    return dis > 0 and dis or 0 
+    return dis > 0 and dis or 0
 end
 
 MaChao.skill["杀-指定目标后"] = function (self, target, t)
@@ -21,6 +21,7 @@ MaChao.skill["铁骑"] = function (self, target, t)
     if self:get_color(id) == macro.color.red then
         t.can_dodge[target] = false
     end
+    helper.insert(deck.discard_pile, id)
 end
 
 return MaChao

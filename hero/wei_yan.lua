@@ -5,7 +5,7 @@ function WeiYan:ctor()
 end
 
 function WeiYan:get_distance(another)
-    local dis = self.super.get_distance(another)
+    local dis = Player.get_distance(self, another)
     if self.flags["奇谋"] then
         dis = dis - self.flags["奇谋"]
     end
@@ -13,10 +13,13 @@ function WeiYan:get_distance(another)
 end
 
 WeiYan.skill["造成伤害后"] = function (self, causer, responder, t)
-    self.skill["狂骨"](self, t)
+    self.skill["狂骨"](self, causer, t)
 end
 
-WeiYan.skill["狂骨"] = function (self, t)
+WeiYan.skill["狂骨"] = function (self, causer, t)
+    if self ~= causer then
+        return
+    end
     if not self["狂骨"] then
         return
     end
@@ -34,7 +37,7 @@ WeiYan.skill["狂骨"] = function (self, t)
 end
 
 WeiYan.check_skill["奇谋"] = function (self)
-    return self["已使用奇谋"]
+    return not self["已使用奇谋"]
 end
 
 WeiYan.skill["奇谋"] = function (self)

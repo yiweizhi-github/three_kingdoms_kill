@@ -4,8 +4,8 @@ function ZhouTai:ctor()
     self["创"] = {}
 end
 
-function ZhouTai:get_card_limit()
-    return #self["创"]
+function ZhouTai:get_hand_cards_limit()
+    return next(self["创"]) and #self["创"] or self.life
 end
 
 ZhouTai.skill["失去手牌"] = function (self, causer, responder, reason)
@@ -22,7 +22,7 @@ ZhouTai.skill["奋激"] = function (self, causer, responder, reason)
     if not query["询问发动技能"]("奋激") then
         return
     end
-    self:sub_life({casuer = self, type = macro.sub_life_type.life_loss, "奋激", card_id = nil, n = 1})
+    self:sub_life({casuer = self, type = macro.sub_life_type.life_loss, name = "奋激", card_id = nil, n = 1})
     helper.insert(responder.hand_cards, deck:draw(2))
 end
 
@@ -36,7 +36,7 @@ ZhouTai.skill["不屈"] = function (self)
         end
     end
     if flag then
-        self:add_life(self, 1 - self.life)
+        self:add_life(1 - self.life)
         helper.insert(self["创"], id)
     else
         helper.insert(deck.discard_pile, id)
