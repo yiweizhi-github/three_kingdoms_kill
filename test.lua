@@ -7,7 +7,7 @@ require("opt")
 require("player")
 require("query")
 require("resmng")
--- 123
+
 function new_test_hero(hero_id)
     local hero_class = require("hero." .. resmng[hero_id].module_name)
     local player = hero_class.new(#game.players + 1, hero_id, #game.players + 1)
