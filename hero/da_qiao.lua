@@ -57,6 +57,13 @@ DaQiao.skill["流离"] = function (self, causer)
     local targets = self:get_players_in_attack_range()
     -- 不能转移给杀的使用者
     helper.remove(targets, causer)
+    -- 不能转移给空城的诸葛亮
+    for _, target in ipairs(targets) do
+        if target:has_skill("空城") and #target.hand_cards == 0 then
+            helper.remove(targets, target)
+            break
+        end
+    end
     if not next(targets) then
         return
     end

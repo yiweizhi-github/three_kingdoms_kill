@@ -11,13 +11,14 @@ CaoCao.skill["奸雄"] = function (self, responder, t)
     if not t.card_id then
         return
     end
+    if not helper.equal(game.settling_card[#game.settling_card], t.card_id) then
+        return
+    end
     if not query["询问发动技能"]("奸雄") then
         return
     end
-    if helper.equal(game.settling_card[#game.settling_card], t.card_id) then
-        helper.pop(game.settling_card)
-        helper.insert(self.hand_cards, t.card_id)
-    end
+    helper.pop(game.settling_card)
+    helper.insert(self.hand_cards, t.card_id)
 end
 
 return CaoCao

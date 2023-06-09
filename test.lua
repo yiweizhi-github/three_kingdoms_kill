@@ -532,7 +532,7 @@ game:init()
 -- player3:put_on_equip(105)
 -- local player4 = new_test_hero(205)
 -- helper.clear(player4.hand_cards)
--- local player5 = new_player_no_skill()
+-- local player5 = new_test_hero(215)
 -- helper.insert(player5.hand_cards, {1})
 -- player5:put_on_equip(105)
 -- local player6 = new_player_no_skill()
@@ -650,27 +650,6 @@ game:init()
 -- player1:after_turn()
 -- text("弃牌堆:%s", t2s(deck.discard_pile))
 
--- -- 张角测试
--- local player1 = new_test_hero(232)
--- player1.life = 4
--- helper.insert(player1.hand_cards, {1, 2, 3, 4, 5, 6, 7, 8, 9, 48, 70})
--- local player2 = new_player_no_skill()
--- player2:put_on_equip(90)
--- helper.insert(player2.hand_cards, {1, 1, 1, 1, 1, 1, 1, 1, 48, 70, 75})
--- table.insert(deck.card_pile, 1, 97)
--- table.insert(deck.card_pile, 2, 99)
--- table.insert(deck.card_pile, 3, 97)
--- player2.flags["跳过判定"] = true
--- player2.flags["跳过摸牌"] = true
--- player2.flags["跳过弃牌"] = true
--- player2:before_turn()
--- player2:turn()
--- player2:after_turn()
--- player1:before_turn()
--- player1:turn()
--- player1:after_turn()
--- text("弃牌堆:%s", t2s(deck.discard_pile))
-
 -- -- 卧龙诸葛测试
 -- local player1 = new_test_hero(233)
 -- player1:put_on_equip(102)
@@ -758,14 +737,35 @@ game:init()
 -- player1:after_turn()
 -- text("弃牌堆:%s", t2s(deck.discard_pile))
 
--- 太史慈测试
-local player1 = new_test_hero(237)
-helper.insert(player1.hand_cards, {1, 1, 98, 108})
-player1:put_on_equip(90)
+-- -- 太史慈测试
+-- local player1 = new_test_hero(237)
+-- helper.insert(player1.hand_cards, {1, 1, 98, 108})
+-- player1:put_on_equip(90)
+-- local player2 = new_player_no_skill()
+-- local player3 = new_player_no_skill()
+-- local player4 = new_test_hero(215)
+-- helper.insert(player4.hand_cards, {1, 1, 1})
+-- player1.flags["跳过判定"] = true
+-- player1.flags["跳过摸牌"] = true
+-- player1.flags["跳过弃牌"] = true
+-- player1:before_turn()
+-- player1:turn()
+-- player1:after_turn()
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
+
+-- 庞德测试
+local player1 = new_test_hero(238)
+helper.insert(player1.hand_cards, {1})
+-- player1:put_on_equip(98)
 local player2 = new_player_no_skill()
+player2:put_on_equip(105)
+helper.insert(player2.hand_cards, 32)
 local player3 = new_player_no_skill()
-local player4 = new_test_hero(215)
-helper.insert(player4.hand_cards, {1, 1, 1})
+helper.clear(player3.hand_cards)
+helper.insert(player3.hand_cards, 2)
+local player4 = new_test_hero(212)
+helper.insert(player4.hand_cards, {32, 32})
+player4:put_on_equip(105)
 player1.flags["跳过判定"] = true
 player1.flags["跳过摸牌"] = true
 player1.flags["跳过弃牌"] = true
