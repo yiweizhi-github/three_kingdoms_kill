@@ -18,11 +18,7 @@ WoLongZhuGe.skill["八阵"] = function (self)
     end
     local id = game:judge(self)
     helper.insert(deck.discard_pile, id)
-    if self:get_suit(id) == macro.color.red then
-        return true
-    else
-        return false
-    end
+    return self:get_color(id) == macro.color.red and true or false
 end
 
 return WoLongZhuGe

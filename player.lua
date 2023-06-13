@@ -848,7 +848,7 @@ Player.skill["八卦阵"] = function (self)
     if not (self:has_skill("天妒") and self.skill["天妒"](self, id)) then
         helper.insert(deck.discard_pile, id)   
     end
-    return self:get_suit(id) == macro.color.red and true or false
+    return self:get_color(id) == macro.color.red and true or false
 end
 
 Player.check_skill["丈八蛇矛"] = function (self)

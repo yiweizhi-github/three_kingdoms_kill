@@ -650,11 +650,12 @@ game:init()
 
 -- -- 卧龙诸葛测试
 -- local player1 = new_test_hero(233)
--- player1:put_on_equip(102)
+-- -- player1:put_on_equip(102)
 -- helper.insert(player1.hand_cards, {1, 22})
 -- local player2 = new_player_no_skill()
 -- player2:put_on_equip(90)
 -- helper.insert(player2.hand_cards, {1, 1, 22, 22, 54})
+-- table.insert(deck.card_pile, 1, 1)
 -- player2.flags["跳过判定"] = true
 -- player2.flags["跳过摸牌"] = true
 -- player2.flags["跳过弃牌"] = true
@@ -1014,27 +1015,27 @@ game:init()
 -- player2:after_turn()
 -- text("弃牌堆:%s", t2s(deck.discard_pile))
 
--- 张昭张纮测试
-local player1 = new_test_hero(252)
-helper.insert(player1.hand_cards, {100, 103, 104})
-local player2 = new_player_no_skill()
-player2.life = 1
-player2:put_on_equip(90)
-helper.clear(player2.hand_cards)
-helper.insert(player2.hand_cards, {1, 1, 1, 1, 96})
-local player3 = new_player_no_skill()
-player3:put_on_equip(105)
-helper.clear(player3.hand_cards)
-player2.flags["跳过判定"] = true
-player2.flags["跳过摸牌"] = true
--- player2.flags["跳过弃牌"] = true
-player2:before_turn()
-player2:turn()
-player2:after_turn()
-player1.flags["跳过判定"] = true
-player1.flags["跳过摸牌"] = true
-player1.flags["跳过弃牌"] = true
-player1:before_turn()
-player1:turn()
-player1:after_turn()
-text("弃牌堆:%s", t2s(deck.discard_pile))
+-- -- 张昭张纮测试
+-- local player1 = new_test_hero(252)
+-- helper.insert(player1.hand_cards, {100, 103, 104})
+-- local player2 = new_player_no_skill()
+-- player2.life = 1
+-- player2:put_on_equip(90)
+-- helper.clear(player2.hand_cards)
+-- helper.insert(player2.hand_cards, {1, 1, 1, 1, 96})
+-- local player3 = new_player_no_skill()
+-- player3:put_on_equip(105)
+-- helper.clear(player3.hand_cards)
+-- player2.flags["跳过判定"] = true
+-- player2.flags["跳过摸牌"] = true
+-- -- player2.flags["跳过弃牌"] = true
+-- player2:before_turn()
+-- player2:turn()
+-- player2:after_turn()
+-- player1.flags["跳过判定"] = true
+-- player1.flags["跳过摸牌"] = true
+-- player1.flags["跳过弃牌"] = true
+-- player1:before_turn()
+-- player1:turn()
+-- player1:after_turn()
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
