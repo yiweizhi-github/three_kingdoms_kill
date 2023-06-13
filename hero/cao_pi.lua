@@ -29,6 +29,9 @@ CaoPi.skill["行殇"] = function (self, target)
 end
 
 CaoPi.skill["受到伤害后"] = function (self, causer, responder, t)
+    if not self:has_skill("放逐") then
+        return
+    end
     self.skill["放逐"](self, responder)
 end
 
@@ -39,11 +42,11 @@ CaoPi.skill["放逐"] = function (self, responder)
     if not query["询问发动技能"]("放逐") then
         return
     end
-    local targets = self:get_other_players(self)
+    local targets = game:get_other_players(self)
     local target = query["选择一名玩家"](targets, "放逐")
-    local n = target.life_limit - target.life
-    helper.insert(target.hand_cards, n)
     target:flip()
+    local n = self.life_limit - self.life
+    helper.insert(target.hand_cards, deck:draw(n))
 end
 
 return CaoPi

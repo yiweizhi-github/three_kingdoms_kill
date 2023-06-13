@@ -27,13 +27,15 @@ LiuShan.skill["放权-回合结束阶段"] = function (self)
         return
     end
     opt["弃置一张牌"](self, self, "放权",  true)
-    local targets = game.get_other_selfs(self)
+    local targets = game:get_other_players(self)
     local target = query["选择一名玩家"](targets, "放权")
-    helper.insert(game.settle_players, self.order + 1, target)
+    table.insert(game.settle_players, self.order + 1, target)
 end
 
 LiuShan.skill["杀-成为目标后"] = function (self, causer, t)
-    self.skill["享乐"](self, causer, t)
+    if self:has_skill("享乐") then
+        self.skill["享乐"](self, causer, t)
+    end
 end
 
 LiuShan.skill["享乐"] = function (self, causer, t)

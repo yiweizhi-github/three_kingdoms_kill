@@ -1,6 +1,9 @@
 CaoCao = class(Player)
 
 CaoCao.skill["受到伤害后"] = function (self, causer, responder, t)
+    if not self:has_skill("奸雄") then
+        return
+    end
     self.skill["奸雄"](self, responder, t)
 end
 

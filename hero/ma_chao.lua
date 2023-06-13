@@ -2,7 +2,9 @@ MaChao = class(Player)
 
 function MaChao:get_distance(another)
     local dis = Player.get_distance(self, another)
-    dis = dis - 1
+    if self:has_skill("马术") then
+        dis = dis - 1
+    end
     return dis > 0 and dis or 0
 end
 

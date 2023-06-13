@@ -224,7 +224,7 @@ game:init()
 
 -- -- 司马懿测试
 -- local player1 = new_test_hero(209)
--- helper.insert(player1.hand_cards, {1, 57, 43, 88})
+-- -- helper.insert(player1.hand_cards, {1, 57, 43, 88})
 -- local player2 = new_player_no_skill()
 -- helper.insert(player2.hand_cards, {1, 57})
 -- player2:put_on_equip(108)
@@ -853,23 +853,186 @@ game:init()
 -- player1:after_turn()
 -- text("弃牌堆:%s", t2s(deck.discard_pile))
 
--- 曹丕、蔡文姬测试
-local player1 = new_test_hero(243)
-local player2 = new_test_hero(253)
-helper.insert(player2.hand_cards, {54, 1, 83})
+-- -- 曹丕、蔡文姬测试
+-- local player1 = new_test_hero(243)
+-- helper.insert(player1.hand_cards, 75)
+-- local player2 = new_test_hero(253)
+-- helper.insert(player2.hand_cards, {1, 1, 1, 1})
+-- local player3 = new_test_hero(221)
+-- helper.insert(player3.hand_cards, {1})
+-- player3:put_on_equip(90)
+-- -- table.insert(deck.card_pile, 1, 1)
+-- -- table.insert(deck.card_pile, 1, 22)
+-- -- table.insert(deck.card_pile, 1, 8)
+-- table.insert(deck.card_pile, 1, 34)
+-- player3.flags["跳过判定"] = true
+-- player3.flags["跳过摸牌"] = true
+-- player3.flags["跳过弃牌"] = true
+-- player3:before_turn()
+-- player3:turn()
+-- player3:after_turn()
+-- player1.flags["跳过判定"] = true
+-- player1.flags["跳过摸牌"] = true
+-- player1.flags["跳过弃牌"] = true
+-- player1:before_turn()
+-- player1:turn()
+-- player1:after_turn()
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
+
+-- -- 孙坚测试
+-- local player1 = new_test_hero(244)
+-- player1.life = 1
+-- local player2 = new_player_no_skill()
+-- local player3 = new_player_no_skill()
+-- helper.clear(player3.hand_cards)
+-- player1.flags["跳过判定"] = true
+-- player1.flags["跳过摸牌"] = true
+-- player1.flags["跳过弃牌"] = true
+-- player1:before_turn()
+-- player1:turn()
+-- player1:after_turn()
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
+
+-- -- 鲁肃测试
+-- local player1 = new_test_hero(245)
+-- helper.insert(player1.hand_cards, {1, 2, 11})
+-- player1:put_on_equip(90)
+-- local player2 = new_player_no_skill()
+-- helper.clear(player2.hand_cards)
+-- helper.insert(player2.hand_cards, {3, 4})
+-- local player3 = new_player_no_skill()
+-- helper.clear(player3.hand_cards)
+-- helper.insert(player3.hand_cards, {5, 6, 7, 8})
+-- local player4 = new_test_hero(221)
+-- helper.clear(player4.hand_cards)
+-- helper.insert(player4.hand_cards, {9, 10})
+-- player1.flags["跳过判定"] = true
+-- player1.flags["跳过弃牌"] = true
+-- player1:before_turn()
+-- player1:turn()
+-- player1:after_turn()
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
+
+-- -- 刘禅测试
+-- local player1 = new_test_hero(247)
+-- helper.insert(player1.hand_cards, {2})
+-- player1:put_on_equip(90)
+-- local player2 = new_player_no_skill()
+-- helper.clear(player2.hand_cards)
+-- helper.insert(player2.hand_cards, {1, 2})
+-- local player3 = new_player_no_skill()
+-- helper.clear(player3.hand_cards)
+-- helper.insert(player3.hand_cards, {5, 6, 7, 8})
+-- local player4 = new_test_hero(221)
+-- helper.clear(player4.hand_cards)
+-- helper.insert(player4.hand_cards, {9, 10})
+-- -- player2.flags["跳过判定"] = true
+-- -- player2.flags["跳过摸牌"] = true
+-- -- player2.flags["跳过弃牌"] = true
+-- -- player2:before_turn()
+-- -- player2:turn()
+-- -- player2:after_turn()
+-- game:main()
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
+
+-- -- 姜维测试
+-- local player1 = new_test_hero(248)
+-- player1:put_on_equip(105)
+-- local player2 = new_player_no_skill()
+-- helper.insert(player2.hand_cards, 32)
+-- player2:put_on_equip(108)
+-- local player3 = new_player_no_skill()
+-- player3:put_on_equip(96)
+-- local player4 = new_player_no_skill()
+-- helper.insert(player4.hand_cards, {32, 32})
+-- player4:put_on_equip(105)
+-- player1.flags["跳过判定"] = true
+-- -- player1.flags["跳过摸牌"] = true
+-- player1.flags["跳过弃牌"] = true
+-- player1:before_turn()
+-- player1:turn()
+-- player1:after_turn()
+-- player1.flags["跳过判定"] = true
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
+
+-- -- 邓艾测试
+-- local player1 = new_test_hero(250)
+-- player1:put_on_equip(105)
+-- helper.insert(player1.hand_cards, {1, 1, 69})
+-- local player2 = new_player_no_skill()
+-- helper.insert(player2.hand_cards, {75, 75, 75, 1, 1})
+-- player2:put_on_equip(105)
+-- local player3 = new_player_no_skill()
+-- player3:put_on_equip(105)
+-- local player4 = new_player_no_skill()
+-- helper.insert(player4.hand_cards, {32, 32})
+-- player4:put_on_equip(105)
+-- player2.flags["跳过判定"] = true
+-- player2.flags["跳过摸牌"] = true
+-- player2.flags["跳过弃牌"] = true
+-- player2:before_turn()
+-- player2:turn()
+-- player2:after_turn()
+-- player1.flags["跳过判定"] = true
+-- player1.flags["跳过摸牌"] = true
+-- player1.flags["跳过弃牌"] = true
+-- player1:before_turn()
+-- player1:turn()
+-- player1:after_turn()
+-- player1.flags["跳过判定"] = true
+-- player1.flags["跳过摸牌"] = true
+-- player1.flags["跳过弃牌"] = true
+-- player1:before_turn()
+-- player1:turn()
+-- player1:after_turn()
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
+
+-- -- 孙策测试
+-- local player1 = new_test_hero(251)
+-- player1.life = 1
+-- helper.insert(player1.hand_cards, {1, 1, 1, 1, 22, 82, 83})
+-- player1:put_on_equip(90)
+-- local player2 = new_player_no_skill()
+-- player2:put_on_equip(90)
+-- helper.clear(player2.hand_cards)
+-- helper.insert(player2.hand_cards, {1, 1, 1, 1, 22, 82, 83})
+-- local player3 = new_player_no_skill()
+-- helper.clear(player3.hand_cards)
+-- local player4 = new_test_hero(221)
+-- helper.clear(player4.hand_cards)
+-- player1.flags["跳过判定"] = true
+-- -- player1.flags["跳过摸牌"] = true
+-- player1.flags["跳过弃牌"] = true
+-- player1:before_turn()
+-- player1:turn()
+-- player1:after_turn()
+-- player2.flags["跳过判定"] = true
+-- player2.flags["跳过摸牌"] = true
+-- player2.flags["跳过弃牌"] = true
+-- player2:before_turn()
+-- player2:turn()
+-- player2:after_turn()
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
+
+-- 张昭张纮测试
+local player1 = new_test_hero(252)
+helper.insert(player1.hand_cards, {100, 103, 104})
+local player2 = new_player_no_skill()
+player2.life = 1
+player2:put_on_equip(90)
+helper.clear(player2.hand_cards)
+helper.insert(player2.hand_cards, {1, 1, 1, 1, 96})
 local player3 = new_player_no_skill()
-table.insert(deck.card_pile, 1, 1)
+player3:put_on_equip(105)
+helper.clear(player3.hand_cards)
 player2.flags["跳过判定"] = true
 player2.flags["跳过摸牌"] = true
-player2.flags["跳过弃牌"] = true
+-- player2.flags["跳过弃牌"] = true
 player2:before_turn()
 player2:turn()
 player2:after_turn()
-table.insert(deck.card_pile, 1, 97)
-table.insert(deck.card_pile, 2, 57)
-table.insert(deck.card_pile, 3, 17)
-table.insert(deck.card_pile, 4, 17)
 player1.flags["跳过判定"] = true
+player1.flags["跳过摸牌"] = true
 player1.flags["跳过弃牌"] = true
 player1:before_turn()
 player1:turn()

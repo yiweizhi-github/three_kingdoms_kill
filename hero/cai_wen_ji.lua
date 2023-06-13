@@ -1,6 +1,9 @@
 CaiWenJi = class(Player)
 
 CaiWenJi.skill["受到伤害后"] = function (self, causer, responder, t)
+    if not self:has_skill("悲歌") then
+        return
+    end
     self.skill["悲歌"](self, causer, responder, t)
 end
 
@@ -15,11 +18,11 @@ CaiWenJi.skill["悲歌"] = function (self, causer, responder, t)
         return
     end
     opt["弃置一张牌"](self, self, "悲歌",  true, true)
-    local id = game.judge(responder)
+    local id = game:judge(responder)
     if not (responder:has_skill(responder, "天妒") and responder.skill["天妒"](responder, id)) then
          helper.insert(deck.discard_pile, id)   
     end
-    local suit = self:get_suit(responder, id)
+    local suit = responder:get_suit(id)
     if suit == macro.suit.heart  then
         responder:add_life(1)
     elseif suit == macro.suit.diamond  then

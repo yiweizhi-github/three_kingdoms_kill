@@ -1,6 +1,9 @@
 LuXvn = class(Player)
 
 LuXvn.skill["失去手牌"] = function (self, causer, responder, reason)
+    if not self:has_skill("连营") then
+        return
+    end
     self.skill["连营"](self, causer, responder, reason)
 end
 

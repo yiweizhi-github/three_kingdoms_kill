@@ -9,6 +9,9 @@ GuoJia.skill["天妒"] = function (self, id)
 end
 
 GuoJia.skill["受到伤害后"] = function (self, causer, responder, t)
+    if not self:has_skill("遗计") then
+        return
+    end
     self.skill["遗计"](self, responder)
 end
 

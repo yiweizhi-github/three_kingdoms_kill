@@ -13,7 +13,9 @@ function DengAi:get_distance(another)
 end
 
 DengAi.skill["回合开始阶段"] = function (self)
-    self.skill["凿险"](self)
+    if self:has_skill("凿险") then
+        self.skill["凿险"](self)  
+    end
 end
 
 DengAi.skill["凿险"] = function (self)
@@ -24,6 +26,7 @@ DengAi.skill["凿险"] = function (self)
         return
     end
     self.life_limit = self.life_limit - 1
+    self.life = self.life > self.life_limit and self.life_limit or self.life
     helper.remove(self.skills, resmng.get_skill_id("凿险"))
     helper.insert(self.skills, resmng.get_skill_id("急袭"))
 end
@@ -46,7 +49,7 @@ DengAi.skill["屯田"] = function (self, responder)
     if not query["询问发动技能"]("屯田") then
         return
     end
-    local id = deck:draw(1)
+    local id = game:judge(self)
     if resmng[id].suit ~= macro.suit.heart then
         helper.insert(self["田"], id)
     else

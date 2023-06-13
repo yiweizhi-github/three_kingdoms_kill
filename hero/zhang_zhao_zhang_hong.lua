@@ -30,9 +30,6 @@ ZhangZhaoZhangHong.get_t["直谏"] = function (self)
 end
 
 ZhangZhaoZhangHong.check_skill["直谏"] = function (self)
-    if self:has_flag("使用过直谏") then
-        return false
-    end
     if not next(self.get_t["直谏"](self)) then
         return false
     end
@@ -40,13 +37,13 @@ ZhangZhaoZhangHong.check_skill["直谏"] = function (self)
 end
 
 ZhangZhaoZhangHong.skill["直谏"] = function (self)
-    self.flags["使用过直谏"] = true
     local t = self.get_t["直谏"](self)
     local cards  = helper.get_keys(t)
     local id = query["选择一张牌"](cards, "直谏")
     local target = query["选择一名玩家"](t[id], "直谏")
+    helper.remove(self.hand_cards, id)
     target:put_on_equip(id)
-    helper.insert(self, deck:draw(1))
+    helper.insert(self.hand_cards, deck:draw(1))
 end
 
 return ZhangZhaoZhangHong

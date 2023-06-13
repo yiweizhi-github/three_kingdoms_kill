@@ -1,6 +1,9 @@
 XiaHouDun = class(Player)
 
 XiaHouDun.skill["受到伤害后"] = function (self, causer, responder, t)
+    if not self:has_skill("刚烈") then
+        return
+    end
     self.skill["刚烈"](self, causer, responder)
 end
 

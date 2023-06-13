@@ -169,9 +169,9 @@ resmng[247] = {name = "刘禅", module_name = "liu_shan", life = 3, sex = "man",
 resmng[248] = {name = "姜维", module_name = "jiang_wei", life = 4, sex = "man", skills = {374, 375}}
 resmng[249] = {name = "张郃", module_name = "zhang_he", life = 4, sex = "man", skills = {376}}
 resmng[250] = {name = "邓艾", module_name = "deng_ai", life = 4, sex = "man", skills = {377, 378}}
-resmng[251] = {name = "孙策", module_name = "sun_ce", life = 4, sex = "man", skills = {379, 380}}
-resmng[252] = {name = "张昭张纮", module_name = "zhang_zhao_zhang_hong", life = 3, sex = "man", skills = {381, 382}}
-resmng[253] = {name = "蔡文姬", module_name = "cai_wen_ji", life = 3, sex = "woman", skills = {383, 284}}
+resmng[251] = {name = "孙策", module_name = "sun_ce", life = 4, sex = "man", skills = {380, 381}}
+resmng[252] = {name = "张昭张纮", module_name = "zhang_zhao_zhang_hong", life = 3, sex = "man", skills = {382, 383}}
+resmng[253] = {name = "蔡文姬", module_name = "cai_wen_ji", life = 3, sex = "woman", skills = {384, 385}}
 
 -- 技能配置
 resmng[301] = "集智"

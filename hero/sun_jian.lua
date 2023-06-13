@@ -18,6 +18,8 @@ SunJian.skill["英魂"] = function (self)
         opt["弃置一张牌"](target, target, "英魂", true, true)
     else
         helper.insert(target.hand_cards, deck:draw(1))
+        local card_n = #target:get_cards(nil, true, true)
+        n = n > card_n and card_n or n
         opt["弃置n张牌"](target, target, "英魂", true, true, n)
     end
 end

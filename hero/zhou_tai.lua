@@ -9,6 +9,9 @@ function ZhouTai:get_hand_cards_limit()
 end
 
 ZhouTai.skill["失去手牌"] = function (self, causer, responder, reason)
+    if not self:has_skill("奋激") then
+        return
+    end
     self.skill["奋激"](self, causer, responder, reason)
 end
 

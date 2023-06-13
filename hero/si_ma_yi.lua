@@ -1,6 +1,9 @@
 SiMaYi = class(Player)
 
 SiMaYi.skill["改判"] = function (self, id)
+    if not self:has_skill("鬼才") then
+        return
+    end
     return self.skill["鬼才"](self, id)
 end
 
@@ -19,6 +22,9 @@ SiMaYi.skill["鬼才"] = function (self, id)
 end
 
 SiMaYi.skill["受到伤害后"] = function (self, causer, responder, t)
+    if not self:has_skill("反馈") then
+        return
+    end
     self.skill["反馈"](self, causer, responder)
 end
 

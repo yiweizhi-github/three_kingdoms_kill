@@ -1,6 +1,9 @@
 ZhangJiao = class(Player)
 
 ZhangJiao.skill["改判"] = function (self, id)
+    if not self:has_skill("鬼道") then
+        return
+    end
     return self.skill["鬼道"](self, id)
 end
 

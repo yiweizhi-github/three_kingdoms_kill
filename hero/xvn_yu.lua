@@ -37,6 +37,9 @@ XvnYu.skill["驱虎"] = function (self)
 end
 
 XvnYu.skill["受到伤害后"] = function (self, causer, responder, t)
+    if not self:has_skill("节命") then
+        return
+    end
     self.skill["节命"](self, responder, t)
 end
 

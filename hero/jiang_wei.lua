@@ -1,7 +1,12 @@
 JiangWei = class(Player)
 
 JiangWei.skill["回合开始阶段"] = function (self)
-    self.skill["志继"](self)
+    if self:has_skill("志继") then
+        self.skill["志继"](self) 
+    end
+    if self:has_skill("观星") then
+        self.skill["观星"](self)   
+    end
 end
 
 JiangWei.skill["志继"] = function (self)
@@ -21,8 +26,26 @@ JiangWei.skill["志继"] = function (self)
         helper.insert(self.hand_cards, deck:draw(2))
     end
     self.life_limit = self.life_limit - 1
+    self.life = self.life > self.life_limit and self.life_limit or self.life
     helper.remove(self.skills, resmng.get_skill_id("志继"))
     helper.insert(self.skills, resmng.get_skill_id("观星"))
+end
+
+JiangWei.skill["观星"] = function ()
+    if not query["询问发动技能"]("观星") then
+        return
+    end
+    local n = #game.players > 5 and 5 or #game.players
+    local cards = deck:draw(n)
+    cards = type(cards) == "number" and {cards} or cards
+    local cards1 = query["观星-调整牌序"](cards)
+    if query["二选一"]("观星") then
+        for i, v in ipairs(cards1) do
+            table.insert(deck.card_pile, i, v)
+        end
+    else
+        helper.insert(deck.card_pile, cards1)
+    end
 end
 
 JiangWei.get_targets["挑衅"] = function (self)
@@ -36,7 +59,7 @@ JiangWei.get_targets["挑衅"] = function (self)
 end
 
 JiangWei.check_skill["挑衅"] = function (self)
-    if self.has_flag("使用过挑衅") then
+    if self:has_flag("使用过挑衅") then
         return false
     end
     if not next(self.get_targets["挑衅"](self)) then
@@ -65,10 +88,10 @@ JiangWei.skill["挑衅"] = function (self)
                 self.skill["杀"](target, id, "挑衅", self)
             end
         else
-            opt["弃置一张牌"](self, target, true, true)
+            opt["弃置一张牌"](self, target, "挑衅", true, true)
         end  
     else
-        opt["弃置一张牌"](self, target, true, true)
+        opt["弃置一张牌"](self, target, "挑衅", true, true)
     end
 end
 
