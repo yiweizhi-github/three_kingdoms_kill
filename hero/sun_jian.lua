@@ -1,7 +1,9 @@
 SunJian = class(Player)
 
 SunJian.skill["回合开始阶段"] = function (self)
-    self.skill["英魂"](self)
+    if self:has_skill("英魂") then
+        self.skill["英魂"](self)
+    end
 end
 
 SunJian.skill["英魂"] = function (self)

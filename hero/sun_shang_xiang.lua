@@ -1,10 +1,9 @@
 SunShangXiang = class(Player)
 
 SunShangXiang.skill["失去装备"] = function (self)
-    if not self:has_skill("枭姬") then
-        return
+    if self:has_skill("枭姬") then
+        self.skill["枭姬"](self)
     end
-    self.skill["枭姬"](self)
 end
 
 SunShangXiang.skill["枭姬"] = function (self)

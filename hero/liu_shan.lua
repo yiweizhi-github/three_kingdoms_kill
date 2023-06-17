@@ -1,7 +1,9 @@
 LiuShan = class(Player)
 
 LiuShan.skill["出牌阶段开始前"] = function (self)
-    self.skill["放权-出牌阶段开始前"](self)
+    if self:has_skill("放权") then
+        self.skill["放权-出牌阶段开始前"](self)
+    end
 end
 
 LiuShan.skill["放权-出牌阶段开始前"] = function (self)
@@ -16,7 +18,9 @@ LiuShan.skill["放权-出牌阶段开始前"] = function (self)
 end
 
 LiuShan.skill["回合结束阶段"] = function (self)
-    self.skill["放权-回合结束阶段"](self)
+    if self:has_skill("放权") then
+        self.skill["放权-回合结束阶段"](self)
+    end
 end
 
 LiuShan.skill["放权-回合结束阶段"] = function (self)

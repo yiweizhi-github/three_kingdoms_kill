@@ -340,7 +340,7 @@ Player.skill["失去装备"] = function (self)
     
 end
 
-Player.skill["改判"] = function (self, id)
+Player.skill["改判"] = function (self, id, judge_player, reason)
     
 end
 
@@ -673,6 +673,7 @@ function Player:kill_set_extra_target(t)
             local new_target = target.skill["流离"](target, self)
             if new_target then
                 helper.insert(t.targets, new_target)
+                game.old_kill_target = nil
             else
                 helper.insert(t.targets, target)
             end
@@ -756,6 +757,12 @@ Player.respond["杀"] = function (self, causer, t)
         if skill_name then
             while t.need_dodge[self] > 0 do
                 if self.skill[skill_name](self) then
+                    if self:has_skill("雷击") then
+                        self.skill["雷击"](self)
+                    end
+                    if game.finish then
+                        return
+                    end
                     t.need_dodge[self] = t.need_dodge[self] - 1
                 else
                     break
@@ -773,6 +780,9 @@ Player.respond["杀"] = function (self, causer, t)
                 helper.remove(self.hand_cards, id)
                 game.skill["失去手牌"](game, self, self, "使用")
                 helper.insert(deck.discard_pile, id)
+                if self:has_skill("雷击") then
+                    self.skill["雷击"](self)
+                end
                 if game.finish then
                     return
                 end
@@ -844,7 +854,7 @@ Player.skill["八卦阵"] = function (self)
     if not query["询问发动技能"]("八卦阵") then
         return false
     end
-    local id = game:judge(self)
+    local id = game:judge(self, "八卦阵")
     if not (self:has_skill("天妒") and self.skill["天妒"](self, id)) then
         helper.insert(deck.discard_pile, id)   
     end
@@ -946,18 +956,17 @@ Player.skill["寒冰剑"] = function (self, causer, target, t)
         return
     end
     local cards = target:get_cards(nil, true, true)
-    if not next(cards)  then
+    if not next(cards) then
         return
     end
     if not query["询问发动技能"]("寒冰剑") then
         return
     end
-    if #cards >= 2 then
-        opt["弃置n张牌"](self, target, "寒冰剑", true, true, 2)
-        t.settle.finish = true
-    else
+    opt["弃置一张牌"](self, target, "寒冰剑", true, true)
+    if next(target:get_cards(nil, true, true)) then
         opt["弃置一张牌"](self, target, "寒冰剑", true, true)
     end
+    t.settle.finish = true
 end
 
 Player.skill["麒麟弓"] = function (self, causer, target)
@@ -1020,10 +1029,7 @@ function Player:sub_life(t)
             return
         end
         game.skill["造成伤害后"](game, t.causer, self, t)
-        -- 还活着才继续结算
-        if self:check_alive() then
-            game.skill["受到伤害后"](game, t.causer, self, t)
-        end
+        game.skill["受到伤害后"](game, t.causer, self, t)
     end
 end
 
@@ -1567,7 +1573,11 @@ Player["无懈可击"] = function (self, first_settle_player, is_valid)
             local id = query["询问出牌"](wxkjs, skills, "无懈可击")
             if resmng.check_card(id) then
                 helper.remove(player.hand_cards, id)
-                game.skill["失去手牌"](game, player, player, "使用")
+                if player:has_skill("集智") then
+                    player.skill["集智"](player)
+                else
+                    game.skill["失去手牌"](game, player, player, "使用")
+                end
                 self:before_settle(id)
                 self:after_settle(id)
                 return first_settle_player["无懈可击"](first_settle_player, player, not is_valid)
@@ -1594,7 +1604,7 @@ Player.respond["乐不思蜀"] = function (self, id)
         return
     end
     text("%s判定乐不思蜀", self.name)
-    local judge_card_id = game:judge(self)
+    local judge_card_id = game:judge(self, "乐不思蜀")
     if not (self:has_skill("天妒") and self.skill["天妒"](self, judge_card_id)) then
         helper.insert(deck.discard_pile, judge_card_id)   
     end
@@ -1632,7 +1642,7 @@ Player.respond["闪电"] = function (self, id)
         return
     end
     text("%s判定闪电", self.name)
-    local judge_card_id = game:judge(self)
+    local judge_card_id = game:judge(self, "闪电")
     if not (self:has_skill("天妒") and self.skill["天妒"](self, judge_card_id)) then
         helper.insert(deck.discard_pile, judge_card_id)   
     end

@@ -1,10 +1,9 @@
 CaiWenJi = class(Player)
 
 CaiWenJi.skill["受到伤害后"] = function (self, causer, responder, t)
-    if not self:has_skill("悲歌") then
-        return
+    if self:has_skill("悲歌") then
+        self.skill["悲歌"](self, causer, responder, t)
     end
-    self.skill["悲歌"](self, causer, responder, t)
 end
 
 CaiWenJi.skill["悲歌"] = function (self, causer, responder, t)
@@ -17,8 +16,8 @@ CaiWenJi.skill["悲歌"] = function (self, causer, responder, t)
     if not query["询问发动技能"]("悲歌") then
         return
     end
-    opt["弃置一张牌"](self, self, "悲歌",  true, true)
-    local id = game:judge(responder)
+    opt["弃置一张牌"](self, self, "悲歌", true, true)
+    local id = game:judge(responder, "悲歌")
     if not (responder:has_skill(responder, "天妒") and responder.skill["天妒"](responder, id)) then
          helper.insert(deck.discard_pile, id)   
     end

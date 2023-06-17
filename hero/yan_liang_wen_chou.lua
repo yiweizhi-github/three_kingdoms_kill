@@ -2,17 +2,22 @@ YanLiangWenChou = class(Player)
 
 function YanLiangWenChou:draw()
     text("现在是%s的摸牌阶段", self.name)
+    self.skill["摸牌阶段开始前"](self)
     if self:has_flag("跳过摸牌") then
         return
     end
-    self.skill["双雄-摸牌阶段"](self)
+    if self:has_skill("双雄") then
+        self.skill["双雄-摸牌阶段"](self)
+    else
+        helper.insert(self.hand_cards, deck:draw(2))
+    end
 end
 
 YanLiangWenChou.skill["双雄-摸牌阶段"] = function (self)
     if not query["询问发动技能"]("双雄") then
         return false
     end
-    local id = game:judge(self)
+    local id = game:judge(self, "双雄")
     helper.insert(self.hand_cards, id)
     self.flags["双雄"] = self:get_color(id)
 end

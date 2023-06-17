@@ -16,7 +16,7 @@ WoLongZhuGe.skill["八阵"] = function (self)
     if not query["询问发动技能"]("八阵") then
         return false
     end
-    local id = game:judge(self)
+    local id = game:judge(self, "八阵")
     helper.insert(deck.discard_pile, id)
     return self:get_color(id) == macro.color.red and true or false
 end

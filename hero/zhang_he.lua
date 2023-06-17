@@ -1,7 +1,9 @@
 ZhangHe = class(Player)
 
 ZhangHe.skill["判定阶段开始前"] = function (self)
-    self.skill["巧变-判定阶段开始前"](self)
+    if self:has_skill("巧变") then
+        self.skill["巧变-判定阶段开始前"](self)
+    end
 end
 
 ZhangHe.skill["巧变-判定阶段开始前"] = function (self)
@@ -16,7 +18,9 @@ ZhangHe.skill["巧变-判定阶段开始前"] = function (self)
 end
 
 ZhangHe.skill["摸牌阶段开始前"] = function (self)
-    self.skill["巧变-摸牌阶段开始前"](self)
+    if self:has_skill("巧变") then
+        self.skill["巧变-摸牌阶段开始前"](self)
+    end
 end
 
 ZhangHe.skill["巧变-摸牌阶段开始前"] = function (self)
@@ -50,7 +54,9 @@ ZhangHe.skill["巧变-摸牌阶段开始前"] = function (self)
 end
 
 ZhangHe.skill["出牌阶段开始前"] = function (self)
-    self.skill["巧变-出牌阶段开始前"](self)
+    if self:has_skill("巧变") then
+        self.skill["巧变-出牌阶段开始前"](self)
+    end
 end
 
 local function get_cards_and_targets(player)
@@ -138,7 +144,9 @@ ZhangHe.skill["巧变-出牌阶段开始前"] = function (self)
 end
 
 ZhangHe.skill["弃牌阶段开始前"] = function (self)
-    self.skill["巧变-弃牌阶段开始前"](self)
+    if self:has_skill("巧变") then
+        self.skill["巧变-弃牌阶段开始前"](self)
+    end
 end
 
 ZhangHe.skill["巧变-弃牌阶段开始前"] = function (self)

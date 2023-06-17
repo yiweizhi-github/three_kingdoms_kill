@@ -2,15 +2,20 @@ LuSu = class(Player)
 
 function LuSu:draw()
     text("现在是%s的摸牌阶段", self.name)
+    self.skill["摸牌阶段开始前"](self)
     if self:has_flag("跳过摸牌") then
         return
     end
-    self.skill["好施"](self)
+    if self:has_skill("好施") then
+        self.skill["好施"](self)
+    else
+        helper.insert(self.hand_cards, deck:draw(2))
+    end
 end
 
 LuSu.skill["好施"] = function (self)
     if not query["询问发动技能"]("好施") then
-        return false
+        return
     end
     helper.insert(self.hand_cards, deck:draw(4))
     if #self.hand_cards > 5 then

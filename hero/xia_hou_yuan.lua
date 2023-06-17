@@ -1,7 +1,9 @@
 XiaHouYuan = class(Player)
 
 XiaHouYuan.skill["判定阶段开始前"] = function (self)
-    self.skill["神速-判定阶段开始前"](self)
+    if self:has_skill("神速") then
+        self.skill["神速-判定阶段开始前"](self)
+    end
 end
 
 XiaHouYuan.skill["神速-判定阶段开始前"] = function (self)
@@ -14,7 +16,9 @@ XiaHouYuan.skill["神速-判定阶段开始前"] = function (self)
 end
 
 XiaHouYuan.skill["出牌阶段开始前"] = function (self)
-    self.skill["神速-出牌阶段开始前"](self)
+    if self:has_skill("神速") then
+        self.skill["神速-出牌阶段开始前"](self)
+    end
 end
 
 XiaHouYuan.skill["神速-出牌阶段开始前"] = function (self)
@@ -34,7 +38,9 @@ XiaHouYuan.skill["神速-出牌阶段开始前"] = function (self)
 end
 
 XiaHouYuan.skill["弃牌阶段开始前"] = function (self)
-    self.skill["神速-弃牌阶段开始前"](self)
+    if self:has_skill("神速") then
+        self.skill["神速-弃牌阶段开始前"](self)
+    end
 end
 
 XiaHouYuan.skill["神速-弃牌阶段开始前"] = function (self)

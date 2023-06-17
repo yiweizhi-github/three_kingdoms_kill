@@ -60,19 +60,19 @@ function Game:compare_points(player1, player2)
     return resmng[id1].points > resmng[id2].points
 end
 
-function Game:judge(player)
+function Game:judge(player, reason)
     local id = deck:draw(1)
     text("判定牌为%d-%s, 花色为%s, 点数为%d", id, resmng[id].name, get_suit_str(player:get_suit(id)), resmng[id].points)
-    id = self.skill["改判"](self, player, id)
+    id = self.skill["改判"](self, player, id, player, reason)
     return id
 end
 
-Game.skill["改判"] = function (self, player, id)
-    local settle_players = self:get_settle_players(player)
-    for _, player1 in ipairs(settle_players) do
-        local id1 = player1.skill["改判"](player1, id)
+Game.skill["改判"] = function (self, first_settle_player, id, judge_player, reason)
+    local settle_players = self:get_settle_players(first_settle_player)
+    for _, settle_player in ipairs(settle_players) do
+        local id1 = settle_player.skill["改判"](settle_player, id, judge_player, reason)
         if id1 then
-            return self.skill["改判"](self, player1, id1)          
+            return self.skill["改判"](self, settle_player, id1, judge_player, reason)          
         end
     end
     return id
@@ -126,7 +126,7 @@ function Game:main()
             player:before_turn()
             player:turn()
             if self.finish then
-                helper.text("恭喜%s杀死所有敌人，赢得最终胜利！", self.players[1].name)
+                text("恭喜%s杀死所有敌人，赢得最终胜利！", self.players[1].name)
                 return
             end
             player:after_turn()

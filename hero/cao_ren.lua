@@ -8,8 +8,9 @@ function CaoRen:flip()
     else
         self.toward = macro.toward.up
         helper.insert(self.skills, resmng[self.hero_id].skills)
-        print("跳过回合")
-        self.skill["解围-翻面"](self)
+        if self:has_skill("解围") then
+            self.skill["解围-翻面"](self)
+        end
     end
 end
 
@@ -125,7 +126,9 @@ CaoRen.skill["解围-翻面"] = function (self)
 end
 
 CaoRen.skill["回合结束阶段"] = function (self)
-    self.skill["据守"](self)
+    if self:has_skill("据守") then
+        self.skill["据守"](self)
+    end
 end
 
 CaoRen.skill["据守"] = function (self)

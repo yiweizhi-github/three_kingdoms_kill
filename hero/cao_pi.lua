@@ -29,10 +29,9 @@ CaoPi.skill["行殇"] = function (self, target)
 end
 
 CaoPi.skill["受到伤害后"] = function (self, causer, responder, t)
-    if not self:has_skill("放逐") then
-        return
+    if self:has_skill("放逐") then
+        self.skill["放逐"](self, responder)
     end
-    self.skill["放逐"](self, responder)
 end
 
 CaoPi.skill["放逐"] = function (self, responder)

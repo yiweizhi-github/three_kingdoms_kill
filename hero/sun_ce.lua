@@ -25,11 +25,14 @@ end
 
 function SunCe:draw()
     text("现在是%s的摸牌阶段", self.name)
+    self.skill["摸牌阶段开始前"](self)
     if self:has_flag("跳过摸牌") then
         return
     end
     if self:has_skill("英姿") then
         self.skill["英姿"](self)
+    else
+        helper.insert(self.hand_cards, deck:draw(2))
     end
 end
 

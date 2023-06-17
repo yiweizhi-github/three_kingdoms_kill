@@ -32,11 +32,15 @@ DengAi.skill["凿险"] = function (self)
 end
 
 DengAi.skill["失去手牌"] = function (self, causer, responder, reason)
-    self.skill["屯田"](self, responder)
+    if self:has_skill("屯田") then
+        self.skill["屯田"](self, responder)
+    end
 end
 
 DengAi.skill["失去装备"] = function (self)
-    self.skill["屯田"](self, self)
+    if self:has_skill("屯田") then
+        self.skill["屯田"](self, self)
+    end
 end
 
 DengAi.skill["屯田"] = function (self, responder)
@@ -49,7 +53,7 @@ DengAi.skill["屯田"] = function (self, responder)
     if not query["询问发动技能"]("屯田") then
         return
     end
-    local id = game:judge(self)
+    local id = game:judge(self, "屯田")
     if resmng[id].suit ~= macro.suit.heart then
         helper.insert(self["田"], id)
     else

@@ -1,10 +1,9 @@
 XiaHouDun = class(Player)
 
 XiaHouDun.skill["受到伤害后"] = function (self, causer, responder, t)
-    if not self:has_skill("刚烈") then
-        return
+    if self:has_skill("刚烈") then
+        self.skill["刚烈"](self, causer, responder)
     end
-    self.skill["刚烈"](self, causer, responder)
 end
 
 XiaHouDun.skill["刚烈"] = function (self, causer, responder)
@@ -17,7 +16,7 @@ XiaHouDun.skill["刚烈"] = function (self, causer, responder)
     if not query["询问发动技能"]("刚烈") then
         return
     end
-    local id = game:judge(self)
+    local id = game:judge(self, "刚烈")
     if self:get_suit(id) == macro.suit.heart then
         return
     end

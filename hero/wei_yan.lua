@@ -13,10 +13,9 @@ function WeiYan:get_distance(another)
 end
 
 WeiYan.skill["造成伤害后"] = function (self, causer, responder, t)
-    if not self:has_skill("狂骨") then
-        return
+    if self:has_skill("狂骨") then
+        self.skill["狂骨"](self, causer, t)
     end
-    self.skill["狂骨"](self, causer, t)
 end
 
 WeiYan.skill["狂骨"] = function (self, causer, t)

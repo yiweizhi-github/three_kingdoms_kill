@@ -80,15 +80,24 @@ game:init()
 -- player1:play()
 -- text("弃牌堆:%s", t2s(deck.discard_pile))
 
--- 黄月英测试
+-- -- 黄月英测试
 -- local player1 = new_test_hero(201)
 -- game.whose_turn = player1
--- helper.insert(player1.hand_cards, {70, 63})
+-- helper.insert(player1.hand_cards, {70, 63, 66})
 -- local player2 = new_player_no_skill()
--- local player3 = new_player_no_skill()
--- local player4 = new_player_no_skill()
--- local player5 = new_player_no_skill()
--- player1:play()
+-- helper.insert(player2, 57)
+-- -- player1.flags["跳过判定"] = true
+-- -- player1.flags["跳过摸牌"] = true
+-- -- player1.flags["跳过弃牌"] = true
+-- -- player1:before_turn()
+-- -- player1:turn()
+-- -- player1:after_turn()
+-- player2.flags["跳过判定"] = true
+-- player2.flags["跳过摸牌"] = true
+-- player2.flags["跳过弃牌"] = true
+-- player2:before_turn()
+-- player2:turn()
+-- player2:after_turn()
 -- text("弃牌堆:%s", t2s(deck.discard_pile))
 
 -- 关羽测试
@@ -183,21 +192,21 @@ game:init()
 -- text("弃牌堆:%s", t2s(deck.discard_pile))
 
 -- 马超测试
--- local player1 = new_test_hero(207)
--- game.whose_turn = player1
--- helper.insert(player1.hand_cards, {1, 1, 91, 70})
--- local player2 = new_player_no_skill()
--- helper.insert(player2.hand_cards, {45, 45})
--- player2:put_on_equip(105)
--- table.insert(deck.card_pile, 1, 47)
--- table.insert(deck.card_pile, 2, 54)
--- player1.flags["跳过判定"] = true
--- player1.flags["跳过摸牌"] = true
--- player1.flags["跳过弃牌"] = true
--- player1:before_turn()
--- player1:turn()
--- player1:after_turn()
--- text("弃牌堆:%s", t2s(deck.discard_pile))
+local player1 = new_test_hero(207)
+game.whose_turn = player1
+helper.insert(player1.hand_cards, {1, 1, 91, 70})
+local player2 = new_player_no_skill()
+helper.insert(player2.hand_cards, {45, 45})
+player2:put_on_equip(105)
+table.insert(deck.card_pile, 1, 47)
+table.insert(deck.card_pile, 2, 54)
+player1.flags["跳过判定"] = true
+player1.flags["跳过摸牌"] = true
+player1.flags["跳过弃牌"] = true
+player1:before_turn()
+player1:turn()
+player1:after_turn()
+text("弃牌堆:%s", t2s(deck.discard_pile))
 
 -- -- 甄姬测试
 -- local player1 = new_test_hero(208)
@@ -1038,4 +1047,56 @@ game:init()
 -- player1:before_turn()
 -- player1:turn()
 -- player1:after_turn()
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
+
+-- -- 张角雷击测试
+-- local player1 = new_test_hero(232)
+-- helper.insert(player1.hand_cards, {31, 31, 31, 31, 1, 1, 1, 1})
+-- player1:put_on_equip(100)
+-- local player2 = new_player_no_skill()
+-- player2.life = 1
+-- helper.insert(player2.hand_cards, 1)
+-- local player3 = new_player_no_skill()
+-- player3.life = 1
+-- helper.insert(player3.hand_cards, 57)
+-- player1.flags["跳过判定"] = true
+-- player1.flags["跳过摸牌"] = true
+-- player1.flags["跳过弃牌"] = true
+-- player2.flags["跳过判定"] = true
+-- player2.flags["跳过摸牌"] = true
+-- player2.flags["跳过弃牌"] = true
+-- player3.flags["跳过判定"] = true
+-- player3.flags["跳过摸牌"] = true
+-- player3.flags["跳过弃牌"] = true
+-- for i = 1, 100, 1 do
+--     table.insert(deck.card_pile, 1, 31)
+-- end
+-- game:main()
+-- text("弃牌堆:%s", t2s(deck.discard_pile))
+
+-- -- 大乔流离测试
+-- local player1 = new_test_hero(215)
+-- helper.insert(player1.hand_cards, {1, 1, 1, 1})
+-- local player2 = new_player_no_skill()
+-- helper.clear(player2.hand_cards)
+-- player2:put_on_equip(98)
+-- helper.insert(player2.hand_cards, 1)
+-- local player3 = new_player_no_skill()
+-- helper.clear(player3.hand_cards)
+-- player3:put_on_equip(98)
+-- helper.insert(player3.hand_cards, 1)
+-- local player4 = new_player_no_skill()
+-- helper.clear(player4.hand_cards)
+-- player2.flags["跳过判定"] = true
+-- player2.flags["跳过摸牌"] = true
+-- player2.flags["跳过弃牌"] = true
+-- player2:before_turn()
+-- player2:turn()
+-- player2:after_turn()
+-- player3.flags["跳过判定"] = true
+-- player3.flags["跳过摸牌"] = true
+-- player3.flags["跳过弃牌"] = true
+-- player3:before_turn()
+-- player3:turn()
+-- player3:after_turn()
 -- text("弃牌堆:%s", t2s(deck.discard_pile))

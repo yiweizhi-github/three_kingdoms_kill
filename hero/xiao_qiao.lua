@@ -1,18 +1,18 @@
 XiaoQiao = class(Player)
 
 function XiaoQiao:get_suit(id)
-    if resmng[id].suit == macro.suit.spade and not helper.element(self.judge_cards, id) then
-        return macro.suit.heart
-    else
-        return resmng[id].suit
+    if self:has_skill("红颜") then
+        if resmng[id].suit == macro.suit.spade and not helper.element(self.judge_cards, id) then
+            return macro.suit.heart
+        end
     end
+    return resmng[id].suit
 end
 
 XiaoQiao.skill["受到伤害时"] = function (self, causer, responder, t)
-    if not self:has_skill("天香") then
-        return
+    if self:has_skill("天香") then
+        self.skill["天香"](self, responder, t)
     end
-    self.skill["天香"](self, responder, t)
 end
 
 XiaoQiao.skill["天香"] = function (self, responder, t)

@@ -9,10 +9,9 @@ ZhuRong.skill["巨象"] = function (self, id)
 end
 
 ZhuRong.skill["造成伤害后"] = function (self, causer, responder, t)
-    if not self:has_skill("烈刃") then
-        return
+    if self:has_skill("烈刃") then
+        self.skill["烈刃"](self, causer, responder, t)
     end
-    self.skill["烈刃"](self, causer, responder, t)
 end
 
 ZhuRong.skill["烈刃"] = function (self, causer, responder, t)

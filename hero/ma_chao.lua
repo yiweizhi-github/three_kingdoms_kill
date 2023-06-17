@@ -19,7 +19,7 @@ MaChao.skill["铁骑"] = function (self, target, t)
     if not query["询问发动技能"]("铁骑") then
         return
     end
-    local id = game:judge(self)
+    local id = game:judge(self, "铁骑")
     if self:get_color(id) == macro.color.red then
         t.can_dodge[target] = false
     end

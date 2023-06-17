@@ -1,7 +1,9 @@
 DiaoChan = class(Player)
 
 DiaoChan.skill["回合结束阶段"] = function (self)
-    self.skill["闭月"](self)
+    if self:has_skill("闭月") then
+        self.skill["闭月"](self)
+    end
 end
 
 DiaoChan.skill["闭月"] = function (self)

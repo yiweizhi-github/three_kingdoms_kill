@@ -2,10 +2,15 @@ XvChu = class(Player)
 
 function XvChu:draw()
     text("现在是%s的摸牌阶段", self.name)
+    self.skill["摸牌阶段开始前"](self)
     if self:has_flag("跳过摸牌") then
         return
     end
-    self.skill["裸衣"](self)
+    if self:has_skill("裸衣") then
+        self.skill["裸衣"](self)
+    else
+        helper.insert(self.hand_cards, deck:draw(2))
+    end
 end
 
 XvChu.skill["裸衣"] = function (self)
