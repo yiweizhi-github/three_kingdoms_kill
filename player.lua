@@ -593,10 +593,14 @@ Player.use["杀"] = function (self, t, reason, ...)
         self:kill_set_target(t, self.get_targets["杀"](self, t))
     elseif reason == "神速" then
         self:kill_set_target(t, self.get_targets["杀"](self, t))
-    elseif reason == "借刀杀人" or reason == "挑衅" or reason == "青龙偃月刀" then
+    elseif reason == "借刀杀人" or reason == "挑衅" then
         local target = ...
         t.targets = {target}
         self:kill_set_extra_target(t)
+    elseif reason == "青龙偃月刀" then
+        local target = ...
+        t.targets = {target}
+        self:kill_set_args(t)
     elseif reason == "乱武" then
         local targets = ...
         self:kill_set_target(t, targets)
@@ -606,16 +610,7 @@ end
 function Player:kill_set_target(t, targets)
     t.targets = {}
     local target = query["选择一名玩家"](targets, "杀")
-    if target:has_skill("流离") then
-        local new_target = target.skill["流离"](target, self)
-        if new_target then
-            helper.insert(t.targets, new_target)
-        else
-            helper.insert(t.targets, target)
-        end
-    else
-        helper.insert(t.targets, target)
-    end
+    helper.insert(t.targets, target)
     self:kill_set_extra_target(t)
 end
 
@@ -647,12 +642,8 @@ function Player:kill_set_extra_target(t)
     end
 
     local targets = self.get_targets["杀"](self, t)
-    if game.old_kill_target then
-        helper.remove(targets, game.old_kill_target)
-        game.old_kill_target = nil
-    else
-        helper.remove(targets, t.targets)
-    end
+    helper.remove(targets, t.targets)
+    
     if n > #targets then
         n = #targets
     end
@@ -660,7 +651,7 @@ function Player:kill_set_extra_target(t)
         text("本次杀你可以额外指定%d名目标", n)    
     end
 
-    for i = 1, n, 1 do
+    for _ = 1, n, 1 do
         if not next(targets) then
             break
         end
@@ -669,27 +660,28 @@ function Player:kill_set_extra_target(t)
         end
         local target = query["选择一名玩家"](targets, "杀")
         helper.remove(targets, target)
-        if target:has_skill("流离") then
-            local new_target = target.skill["流离"](target, self)
-            if new_target then
-                helper.insert(t.targets, new_target)
-                game.old_kill_target = nil
-            else
-                helper.insert(t.targets, target)
-            end
-        else
-            helper.insert(t.targets, target)
-        end
-    end
-    
-    if #t.targets > 1 then
-        t.targets = adjust_kill_targets_order(self, t.targets)    
+        helper.insert(t.targets, target)
     end
 
     self:kill_set_args(t)
 end
 
 function Player:kill_set_args(t)
+    for _, target in ipairs(t.targets) do
+        if target:has_skill("流离") then
+            local new_target = target.skill["流离"](target, self)
+            if new_target then
+                helper.remove(t.targets, target)
+                helper.insert(t.targets, new_target)
+            end
+            break
+        end
+    end
+
+    if #t.targets > 1 then
+        t.targets = adjust_kill_targets_order(self, t.targets)
+    end
+
     t.need_dodge = {}
     for _, target in ipairs(t.targets) do
         t.need_dodge[target] = 1
@@ -717,12 +709,21 @@ function Player:kill_set_args(t)
         end
     end
 
+    local not_duplicate_targets = {}
+    local last_target
     for _, target in ipairs(t.targets) do
+        if target ~= last_target then
+            helper.insert(not_duplicate_targets, target)
+            last_target = target
+        end
+    end
+    
+    for _, target in ipairs(not_duplicate_targets) do
         self.skill["杀-指定目标后"](self, target, t)  
     end
 
     t.invalid = {}
-    for _, target in ipairs(t.targets) do
+    for _, target in ipairs(not_duplicate_targets) do
         target.skill["杀-成为目标后"](target, self, t)  
     end
     
@@ -933,20 +934,12 @@ Player.skill["青龙偃月刀"] = function (self, target)
     end
     local id = query["询问出牌"](kills, skills, "杀")
     if resmng.check_card(id) then
-        if target:has_skill("流离") then
-            local new_target = target.skill["流离"](target, self)
-            target = new_target or target
-        end
         helper.remove(self.hand_cards, id)
         game.skill["失去手牌"](game, self, self, "使用")
         self:before_settle(id)
         self.use["杀"](self, {id = id}, "青龙偃月刀", target)
         self:after_settle(id)
     elseif resmng.check_skill(id) then
-        if target:has_skill("流离") then
-            local new_target = target.skill["流离"](target, self)
-            target = new_target or target
-        end
         self.skill["杀"](self, id, "青龙偃月刀", target)
     end
 end
@@ -966,7 +959,7 @@ Player.skill["寒冰剑"] = function (self, causer, target, t)
     if next(target:get_cards(nil, true, true)) then
         opt["弃置一张牌"](self, target, "寒冰剑", true, true)
     end
-    t.settle.finish = true
+    t.settle_finish = true
 end
 
 Player.skill["麒麟弓"] = function (self, causer, target)
@@ -1478,20 +1471,12 @@ Player.respond["借刀杀人"] = function (self, causer, target)
     if next(kills) or next(skills) then
         local id = query["询问出牌"](kills, skills, "杀")
         if resmng.check_card(id) then
-            if target:has_skill("流离") then
-                local new_target = target.skill["流离"](target, self)
-                target = new_target or target
-            end
             helper.remove(self.hand_cards, id)
             game.skill["失去手牌"](game, self, self, "使用")
             self:before_settle(id)
             self.use["杀"](self, {id = id}, "借刀杀人", target)
             self:after_settle(id)
         elseif resmng.check_skill(id) then
-            if target:has_skill("流离") then
-                local new_target = target.skill["流离"](target, self)
-                target = new_target or target
-            end
             self.skill["杀"](self, id, "借刀杀人", target)
         else
             local arm_id = self.arm

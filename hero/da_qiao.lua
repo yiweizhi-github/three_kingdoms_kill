@@ -75,7 +75,6 @@ DaQiao.skill["流离"] = function (self, causer)
     end
     opt["弃置一张牌"](self, self, "流离", true, true)
     local target = query["选择一名玩家"](targets, "流离")
-    game.old_kill_target = self
     return target
 end
 

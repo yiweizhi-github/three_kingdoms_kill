@@ -6,7 +6,6 @@ function Game:init()
     self.players = {}
     self.whose_turn = nil -- 当前是谁的回合
     self.transfer_delay_tactics = {} -- 记录大乔-国色转化的乐不思蜀
-    self.old_kill_target = nil -- 使用方天画戟或天义时，若大乔流离转移，则此变量指向大乔避免其再次成为可选目标
     self.settling_card = {}
     self.finish = false
     self.settle_players = {} -- 回合顺序
