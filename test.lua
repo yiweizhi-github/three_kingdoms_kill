@@ -1163,7 +1163,7 @@ game:init()
 -- text("弃牌堆:%s", t2s(deck.discard_pile))
 
 -- -- 贯石斧测试
--- local player1 = new_player_no_skill()
+-- local player1 = new_test_hero(216)
 -- helper.clear(player1.hand_cards)
 -- helper.insert(player1.hand_cards, {1, 1, 2})
 -- player1:put_on_equip(95)
@@ -1208,9 +1208,9 @@ game:init()
 -- text("弃牌堆:%s", t2s(deck.discard_pile))
 
 -- 丈八蛇矛测试
-local player1 = new_test_hero(237)
+local player1 = new_test_hero(221)
 helper.clear(player1.hand_cards)
-helper.insert(player1.hand_cards, {1, 1, 1, 1, 89})
+helper.insert(player1.hand_cards, {34, 89})
 player1:put_on_equip(97)
 local player2 = new_player_no_skill()
 helper.clear(player2.hand_cards)

@@ -866,7 +866,7 @@ Player.check_skill["丈八蛇矛"] = function (self)
     if not self:check_can_kill() then
         return false
     end
-    if self.hand_cards < 2 then
+    if #self.hand_cards < 2 then
         return false
     end
     return true
@@ -874,11 +874,11 @@ end
 
 Player.skill["丈八蛇矛"] = function (self, reason, ...)
     local id1 = query["选择一张牌"](self.hand_cards, "丈八蛇矛")
-    helper.remove(self.hand_cards)
+    helper.remove(self.hand_cards, id1)
     local id2 = query["选择一张牌"](self.hand_cards, "丈八蛇矛")
-    helper.remove(self.hand_cards)
-    game.skill["失去手牌"](game, self, self, "使用")
+    helper.remove(self.hand_cards, id2)
     local ids = {id1, id2}
+    game.skill["失去手牌"](game, self, self, "使用")
     if not reason then
         reason = "正常出杀"
     end
@@ -918,7 +918,7 @@ Player.skill["贯石斧"] = function (self, target, t)
     if not query["询问发动技能"]("贯石斧") then
         return
     end
-    opt["弃置n张牌"](self, self, "贯石斧", true, true, 2)
+    opt["弃置n张牌"](self, self, "贯石斧", true, true, 2, func)
     target:sub_life({causer = self, type = macro.sub_life_type.damage, name = "杀", card_id = t.id, n = t.damage[target]})
 end
 
@@ -1161,6 +1161,10 @@ Player.get_targets["杀"] = function (self, t)
                     helper.insert(targets, target)   
                 end
             elseif t.transfer_type == "龙胆" then
+                if helper.element(self:get_players_in_attack_range(), target) then
+                    helper.insert(targets, target)
+                end
+            elseif t.transfer_type == "丈八蛇矛" then
                 if helper.element(self:get_players_in_attack_range(), target) then
                     helper.insert(targets, target)
                 end
