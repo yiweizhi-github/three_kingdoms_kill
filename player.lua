@@ -310,25 +310,26 @@ end
 
 function Player:after_settle(id)
     -- 结算完的牌可能由于曹操-奸雄等技能已经从结算区被拿走，所以要判断下再放入弃牌区
-    if helper.equal(game.settling_card[#game.settling_card], id) then
-        helper.pop(game.settling_card)
-        if type(id) == "number" and resmng[id].name == "南蛮入侵" then
-            local settle_players = game:get_settle_players(game.whose_turn)
-            local need_discard = true
-            for _, player in ipairs(settle_players) do
-                if player:has_skill("巨象") then
-                    if player.skill["巨象"](player, id) then
-                        need_discard = false
-                    end
-                    break
+    if not helper.equal(game.settling_card[#game.settling_card], id) then
+        return
+    end
+    helper.pop(game.settling_card)
+    if type(id) == "number" and resmng[id].name == "南蛮入侵" then
+        local settle_players = game:get_settle_players(game.whose_turn)
+        local need_discard = true
+        for _, player in ipairs(settle_players) do
+            if player:has_skill("巨象") then
+                if player.skill["巨象"](player, id) then
+                    need_discard = false
                 end
+                break
             end
-            if need_discard then
-                helper.insert(deck.discard_pile, id)
-            end
-        else
+        end
+        if need_discard then
             helper.insert(deck.discard_pile, id)
         end
+    else
+        helper.insert(deck.discard_pile, id)
     end
 end
 
