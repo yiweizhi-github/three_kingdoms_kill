@@ -42,17 +42,35 @@ XvnYu.skill["受到伤害后"] = function (self, causer, responder, t)
     end
 end
 
+XvnYu.get_targets["节命"] = function()
+    local targets = {}
+    for _, target in ipairs(game.players) do
+        if #target.hand_cards < target.life_limit and  #target.hand_cards < 5 then
+            helper.insert(targets, target)
+        end
+    end
+    return targets
+end
+
 XvnYu.skill["节命"] = function (self, responder, t)
     if responder ~= self then
+        return
+    end
+    local targets = self.get_targets["节命"]()
+    if not next(targets) then
         return
     end
     if not query["询问发动技能"]("节命") then
         return
     end
     for _ = 1, t.n, 1 do
-        local target = query["选择一名玩家"](game.players, "节命")
+        local target = query["选择一名玩家"](targets, "节命")
         local limit = target.life_limit <= 5 and target.life_limit or 5
         helper.insert(target.hand_cards, deck:draw(limit - #target.hand_cards))
+        targets = self.get_targets["节命"]()
+        if not next(targets) then
+            break
+        end
     end
 end
 

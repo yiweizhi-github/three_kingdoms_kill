@@ -963,8 +963,11 @@ Player.skill["寒冰剑"] = function (self, causer, target, t)
     t.settle_finish = true
 end
 
-Player.skill["麒麟弓"] = function (self, causer, target)
+Player.skill["麒麟弓"] = function (self, causer, target, t)
     if self ~= causer then
+        return
+    end
+    if t.name ~= "杀" then
         return
     end
     local func = function (id) return resmng[id].type == "add_horse" or resmng[id].type == "sub_horse" end
@@ -1032,7 +1035,7 @@ Player.skill["造成伤害时"] = function (self, causer, responder, t)
     if self:has_skill("寒冰剑") then
         self.skill["寒冰剑"](self, causer, responder, t)
     elseif self:has_skill("麒麟弓") then
-        self.skill["麒麟弓"](self, causer, responder)
+        self.skill["麒麟弓"](self, causer, responder, t)
     end
 end
 
@@ -1429,6 +1432,9 @@ Player.respond["过河拆桥"] = function (self, causer)
     if self["无懈可击"](self, causer, false) then
         return
     end
+    if self:get_cards(nil, true, true, true) then
+        return
+    end
     opt["弃置一张牌"](causer, self, "过河拆桥", true, true, true)
 end
 
@@ -1442,6 +1448,9 @@ end
 Player.respond["顺手牵羊"] = function (self, causer)
     text("%s结算顺手牵羊：", self.name)
     if self["无懈可击"](self, causer, false) then
+        return
+    end
+    if self:get_cards(nil, true, true, true) then
         return
     end
     opt["获得一张牌"](causer, self, "顺手牵羊", true, true, true)

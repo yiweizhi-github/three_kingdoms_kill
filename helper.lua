@@ -162,14 +162,39 @@ function print_player_info(player)
     text("ID:%s", player.id)
     text("名字:%s", player.name)
     text("生命:%d", player.life)
-    text("生命上限:%d", player.life_limit)
-    text("技能:%s", t2s(player.skills))
-    text("手牌:%s", t2s(player.hand_cards))
-    text("武器:%s", t2s(player.arm))
-    text("防具:%s", t2s(player.armor))
-    text("+1马:%s", t2s(player.add_horse))
-    text("-1马:%s", t2s(player.sub_horse))
-    text("判定区:%s", t2s(player.judge_cards))
+    -- text("生命上限:%d", player.life_limit)
+    -- text("技能:%s", t2s(player.skills))
+    -- text("手牌:%s", t2s(player.hand_cards))
+    -- text("武器:%s", t2s(player.arm))
+    -- text("防具:%s", t2s(player.armor))
+    -- text("+1马:%s", t2s(player.add_horse))
+    -- text("-1马:%s", t2s(player.sub_horse))
+    -- text("判定区:%s", t2s(player.judge_cards))
+
+    if player.life == player.life_limit then
+        text("生命上限:%d", player.life_limit)
+    end
+    if next(player.skills) then
+        text("技能:%s", t2s(player.skills))
+    end
+    if next(player.hand_cards) then
+        text("手牌:%s", t2s(player.hand_cards))
+    end
+    if player.arm then
+        text("武器:%s", t2s(player.arm))
+    end
+    if player.armor then
+        text("防具:%s", t2s(player.armor))
+    end
+    if player.add_horse then
+        text("+1马:%s", t2s(player.add_horse))
+    end
+    if player.sub_horse then
+        text("-1马:%s", t2s(player.sub_horse))
+    end
+    if next(player.judge_cards) then
+        text("判定区:%s", t2s(player.judge_cards))
+    end
 end
 
 return helper

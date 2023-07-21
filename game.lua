@@ -10,22 +10,22 @@ function Game:init()
     self.finish = false
     self.settle_players = {} -- 回合顺序
     
-    -- local hero_ids = {}
-    -- for i = 1, 4, 1 do
-    --     local hero_id = math.random(resmng.hero_finish_id - resmng.hero_start_id + 2 - i)
-    --     for _, hero_id1 in ipairs(hero_ids) do
-    --         if hero_id >= hero_id1 then
-    --             hero_id = hero_id + 1
-    --         end
-    --     end
-    --     helper.insert(hero_ids, hero_id)
-    --     table.sort(hero_ids)
-    --     hero_id = hero_id + resmng.hero_start_id - 1
-    --     local hero_class = require("hero." .. resmng[hero_id].module_name)
-    --     local player = hero_class.new(i, hero_id, i)
-    --     helper.insert(self.players, player)
-    --     helper.insert(player.hand_cards, deck:draw(4))
-    -- end
+    local hero_ids = {}
+    for i = 1, 4, 1 do
+        local hero_id = math.random(resmng.hero_finish_id - resmng.hero_start_id + 2 - i)
+        for _, hero_id1 in ipairs(hero_ids) do
+            if hero_id >= hero_id1 then
+                hero_id = hero_id + 1
+            end
+        end
+        helper.insert(hero_ids, hero_id)
+        table.sort(hero_ids)
+        hero_id = hero_id + resmng.hero_start_id - 1
+        local hero_class = require("hero." .. resmng[hero_id].module_name)
+        local player = hero_class.new(i, hero_id, i)
+        helper.insert(self.players, player)
+        helper.insert(player.hand_cards, deck:draw(4))
+    end
 end
 
 function Game:get_player(id)
