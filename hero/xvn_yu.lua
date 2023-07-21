@@ -69,7 +69,7 @@ XvnYu.skill["节命"] = function (self, responder, t)
         helper.insert(target.hand_cards, deck:draw(limit - #target.hand_cards))
         targets = self.get_targets["节命"]()
         if not next(targets) then
-            break
+            return
         end
     end
 end

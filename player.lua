@@ -1432,7 +1432,7 @@ Player.respond["过河拆桥"] = function (self, causer)
     if self["无懈可击"](self, causer, false) then
         return
     end
-    if self:get_cards(nil, true, true, true) then
+    if not next(self:get_cards(nil, true, true, true)) then
         return
     end
     opt["弃置一张牌"](causer, self, "过河拆桥", true, true, true)
@@ -1450,7 +1450,7 @@ Player.respond["顺手牵羊"] = function (self, causer)
     if self["无懈可击"](self, causer, false) then
         return
     end
-    if self:get_cards(nil, true, true, true) then
+    if not next(self:get_cards(nil, true, true, true)) then
         return
     end
     opt["获得一张牌"](causer, self, "顺手牵羊", true, true, true)
